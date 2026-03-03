@@ -3,100 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VERIF STORE</title>
+<title>Verif Store - Premium Digital Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body {
-    margin:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color:white;
-    text-align:center;
-}
-.container {
-    max-width:500px;
-    margin:auto;
-    padding:20px;
-}
-h1 {
-    margin-top:20px;
-    font-size:28px;
-}
-.card {
-    background:#1e2a38;
-    padding:15px;
-    margin:15px 0;
-    border-radius:10px;
-}
-button {
-    background:#00c6ff;
-    border:none;
-    padding:10px 20px;
-    color:white;
-    border-radius:6px;
-    cursor:pointer;
-    margin-top:10px;
-}
-button:hover {
-    background:#0072ff;
-}
-img {
-    max-width:100%;
-    border-radius:10px;
-}
-.payment-box {
-    text-align:left;
-    font-size:14px;
-    word-wrap:break-word;
-}
-input[type=file]{
-    margin-top:10px;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#0f0f0f,#0f172a,#111827);color:white;overflow-x:hidden}
+header{padding:20px;text-align:center;font-size:22px;font-weight:bold;background:linear-gradient(90deg,#00ffcc,#6a00ff);-webkit-background-clip:text;color:transparent}
+.section{min-height:100vh;padding:40px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:0.5s}
+.hidden{display:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;width:100%;max-width:1000px}
+.card{background:rgba(255,255,255,0.05);padding:50px 20px;border-radius:25px;text-align:center;cursor:pointer;transition:0.4s;border:1px solid rgba(255,255,255,0.1)}
+.card:hover{transform:translateY(-10px);box-shadow:0 0 40px rgba(106,0,255,0.6)}
+.card h2{margin-top:20px}
+.products{width:100%;max-width:800px}
+.product{background:#1e293b;padding:20px;margin-bottom:15px;border-radius:15px;display:flex;justify-content:space-between;align-items:center}
+button{background:yellow;border:none;padding:8px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:hover{opacity:0.8}
+.back{margin-bottom:20px;cursor:pointer;color:#00ffcc}
+.checkout-box{background:#111827;padding:20px;border-radius:15px;margin-top:20px;width:100%;max-width:800px}
+input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none}
+.qris-img{width:100%;border-radius:15px;margin-top:15px}
+.success{background:#003300;padding:15px;border-radius:10px;margin-top:15px;display:none}
+footer{text-align:center;padding:20px;opacity:0.5}
 </style>
 </head>
 <body>
 
-<div class="container">
+<header>VERIF STORE</header>
 
-<h1>🔥 VERIF STORE 🔥</h1>
-<p>Trusted • Fast Response • Aman 100%</p>
-
-<div class="card">
-<h2>💎 Growtopia WL</h2>
-<p>Harga sesuai market</p>
-<button onclick="alert('Hubungi admin untuk pembelian')">Beli Sekarang</button>
+<!-- HOME -->
+<div class="section" id="home">
+<h1 style="margin-bottom:40px">Pilih Game</h1>
+<div class="cards">
+<div class="card" onclick="openGame('growtopia')">
+<div style="font-size:50px">🌱</div>
+<h2>Growtopia</h2>
+<p>Diamond Lock & BGL</p>
+</div>
+<div class="card" onclick="openGame('creativeps')">
+<div style="font-size:50px">💎</div>
+<h2>CreativePS</h2>
+<p>Gem Lock, Mray, IGL, dll</p>
+</div>
+</div>
 </div>
 
-<div class="card">
-<h2>🎮 CreativePS DL</h2>
-<p>Stok aman & cepat</p>
-<button onclick="alert('Hubungi admin untuk pembelian')">Beli Sekarang</button>
+<!-- GROWTOpia -->
+<div class="section hidden" id="growtopia">
+<div class="back" onclick="goHome()">⬅ Kembali</div>
+<h1>Growtopia Currency</h1>
+<div class="products">
+<div class="product"><span>Diamond Lock - Rp 245</span><button onclick="addToCart('Diamond Lock',245)">Tambah</button></div>
+<div class="product"><span>Blue Gem Lock - Rp 24.500</span><button onclick="addToCart('Blue Gem Lock',24500)">Tambah</button></div>
+</div>
+<button style="margin-top:30px" onclick="openCheckout()">Checkout</button>
 </div>
 
-<div class="card payment-box">
-<h2>💳 Metode Pembayaran</h2>
-<p><b>DANA:</b> 0887-4377-04858</p>
-<p><b>GOPAY:</b> 0813-1549-5903</p>
-<p><b>PAYPAL:</b> farhanfaza02@gmail.com</p>
-<p><b>USDT (BEP20):</b><br>0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE</p>
+<!-- CreativePS -->
+<div class="section hidden" id="creativeps">
+<div class="back" onclick="goHome()">⬅ Kembali</div>
+<h1>CreativePS Currency</h1>
+<div class="products">
+<div class="product"><span>Blue Gem Lock - Rp 1.100</span><button onclick="addToCart('CPS Blue Gem Lock',1100)">Tambah</button></div>
+<div class="product"><span>Black Gem Lock - Rp 107.500</span><button onclick="addToCart('Black Gem Lock',107500)">Tambah</button></div>
+<div class="product"><span>Mray - Rp 120.000</span><button onclick="addToCart('Mray',120000)">Tambah</button></div>
+<div class="product"><span>IGL - Rp 30.000</span><button onclick="addToCart('IGL',30000)">Tambah</button></div>
+<div class="product"><span>Creative Coin - Rp 18.000</span><button onclick="addToCart('Creative Coin',18000)">Tambah</button></div>
+<div class="product"><span>Lray - Rp 2.000</span><button onclick="addToCart('Lray',2000)">Tambah</button></div>
+</div>
+<button style="margin-top:30px" onclick="openCheckout()">Checkout</button>
 </div>
 
-<div class="card">
-<h2>📱 QRIS</h2>
-<p>Scan QR di bawah ini:</p>
+<!-- CHECKOUT -->
+<div class="section hidden" id="checkout">
+<div class="back" onclick="goHome()">⬅ Kembali</div>
+<h1>Checkout</h1>
+<div class="checkout-box" id="cart-items">Keranjang kosong</div>
 
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAAGACAIAAABpV6bVAAAgAElEQVR4nO3de5BV5Z3/8c9...PASTE_FULL_CODE_DISINI...5ErkJggg==" 
-alt="QRIS" 
-style="max-width:100%; border-radius:10px;">
-
-<div class="card">
-<h2>📤 Upload Bukti Transfer</h2>
-<input type="file">
-<p>Kirim bukti ke admin setelah upload.</p>
+<div class="checkout-box">
+<h3>Data Pembeli</h3>
+<input type="text" placeholder="Nama Anda">
+<input type="text" placeholder="Username Game">
+<select>
+<option>DANA</option>
+<option>GoPay</option>
+<option>QRIS</option>
+<option>PayPal</option>
+<option>USDT (BEP20)</option>
+</select>
 </div>
 
-<p style="margin-top:30px;font-size:12px;">© 2026 VERIF STORE</p>
-
+<div class="checkout-box">
+<h3>Metode Pembayaran</h3>
+<p>DANA : 0887-4377-04858</p>
+<p>GoPay : 0813-1549-5903</p>
+<p>PayPal : farhanfaza02@gmail.com</p>
+<p>USDT (BEP20) :<br>0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE</p>
+<h4 style="margin-top:15px">QRIS</h4>
+<img src="qris.png" class="qris-img">
 </div>
+
+<div class="checkout-box">
+<h3>Upload Bukti Pembayaran</h3>
+<input type="file" accept="image/*">
+</div>
+
+<button onclick="finishOrder()">Konfirmasi Pembayaran</button>
+<div class="success" id="success-msg">Pesanan berhasil dikirim! Admin akan memproses segera.</div>
+</div>
+
+<footer>© 2026 Verif Store - Premium Digital Store</footer>
+
+<script>
+let cart=[];
+
+function openGame(id){
+document.getElementById('home').classList.add('hidden');
+document.getElementById(id).classList.remove('hidden');
+window.scrollTo(0,0);
+}
+
+function goHome(){
+document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+document.getElementById('home').classList.remove('hidden');
+window.scrollTo(0,0);
+}
+
+function addToCart(name,price){
+cart.push({name,price});
+alert(name+' ditambahkan ke keranjang');
+}
+
+function openCheckout(){
+document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+document.getElementById('checkout').classList.remove('hidden');
+renderCart();
+window.scrollTo(0,0);
+}
+
+function renderCart(){
+let box=document.getElementById('cart-items');
+if(cart.length==0){box.innerHTML='Keranjang kosong';return}
+let total=0;let html='';
+cart.forEach(item=>{total+=item.price;html+=item.name+' - Rp '+item.price+'<br>'});
+html+='<hr><b>Total: Rp '+total+'</b>';
+box.innerHTML=html;
+}
+
+function finishOrder(){
+document.getElementById('success-msg').style.display='block';
+cart=[];
+}
+</script>
 
 </body>
 </html>
