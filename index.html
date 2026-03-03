@@ -3,156 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verif Store - Premium Digital Store</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<title>Verif Store - PRO Version</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#0f0f0f,#0f172a,#111827);color:white;overflow-x:hidden}
-header{padding:20px;text-align:center;font-size:22px;font-weight:bold;background:linear-gradient(90deg,#00ffcc,#6a00ff);-webkit-background-clip:text;color:transparent}
-.section{min-height:100vh;padding:40px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:0.5s}
-.hidden{display:none}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;width:100%;max-width:1000px}
-.card{background:rgba(255,255,255,0.05);padding:50px 20px;border-radius:25px;text-align:center;cursor:pointer;transition:0.4s;border:1px solid rgba(255,255,255,0.1)}
-.card:hover{transform:translateY(-10px);box-shadow:0 0 40px rgba(106,0,255,0.6)}
-.card h2{margin-top:20px}
-.products{width:100%;max-width:800px}
-.product{background:#1e293b;padding:20px;margin-bottom:15px;border-radius:15px;display:flex;justify-content:space-between;align-items:center}
-button{background:yellow;border:none;padding:8px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f0f0f,#111827,#0f172a);color:white}
+header{padding:20px 30px}
+.logo{font-size:22px;font-weight:700;background:linear-gradient(90deg,#00ffcc,#6a00ff);-webkit-background-clip:text;color:transparent}
+.container{max-width:1100px;margin:auto;padding:40px 20px}
+.section-title{margin-top:40px;margin-bottom:20px;font-size:22px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:rgba(255,255,255,0.05);border-radius:20px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.08)}
+.price{color:#00ffcc;margin-bottom:10px;font-weight:600}
+input,button{padding:8px;border-radius:8px;border:none;margin-top:8px}
+input{width:80px;text-align:center}
+button{background:#00ffcc;font-weight:600;cursor:pointer}
 button:hover{opacity:0.8}
-.back{margin-bottom:20px;cursor:pointer;color:#00ffcc}
-.checkout-box{background:#111827;padding:20px;border-radius:15px;margin-top:20px;width:100%;max-width:800px}
-input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:none}
-.qris-img{width:100%;border-radius:15px;margin-top:15px}
-.success{background:#003300;padding:15px;border-radius:10px;margin-top:15px;display:none}
-footer{text-align:center;padding:20px;opacity:0.5}
+.receipt{background:#0f172a;padding:15px;border-radius:12px;margin-top:20px;display:none}
+.upload-box{margin-top:20px;padding:15px;background:#111827;border-radius:12px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;padding:20px}
+.modal-content{background:#111827;padding:30px;border-radius:20px;max-width:500px;width:100%;text-align:center}
+.modal-content img{width:100%;border-radius:15px;margin-top:15px}
+.close{margin-top:20px;background:red;color:white;padding:10px 15px;border:none;border-radius:8px;cursor:pointer}
+footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px}
 </style>
 </head>
 <body>
 
-<header>VERIF STORE</header>
+<header>
+<div class="logo">VERIF STORE PRO</div>
+</header>
 
-<!-- HOME -->
-<div class="section" id="home">
-<h1 style="margin-bottom:40px">Pilih Game</h1>
-<div class="cards">
-<div class="card" onclick="openGame('growtopia')">
-<div style="font-size:50px">🌱</div>
-<h2>Growtopia</h2>
-<p>Diamond Lock & BGL</p>
-</div>
-<div class="card" onclick="openGame('creativeps')">
-<div style="font-size:50px">💎</div>
-<h2>CreativePS</h2>
-<p>Gem Lock, Mray, IGL, dll</p>
-</div>
-</div>
-</div>
+<div class="container">
 
-<!-- GROWTOpia -->
-<div class="section hidden" id="growtopia">
-<div class="back" onclick="goHome()">⬅ Kembali</div>
-<h1>Growtopia Currency</h1>
+<h2 class="section-title">🌱 Growtopia</h2>
 <div class="products">
-<div class="product"><span>Diamond Lock - Rp 245</span><button onclick="addToCart('Diamond Lock',245)">Tambah</button></div>
-<div class="product"><span>Blue Gem Lock - Rp 24.500</span><button onclick="addToCart('Blue Gem Lock',24500)">Tambah</button></div>
+<div class="card">
+<h3>Diamond Lock</h3>
+<div class="price">Rp 245</div>
+<input type="number" id="gt1" value="1" min="1"><br>
+<button onclick="generateReceipt('Growtopia - Diamond Lock',245,'gt1')">Beli</button>
 </div>
-<button style="margin-top:30px" onclick="openCheckout()">Checkout</button>
+<div class="card">
+<h3>Blue Gem Lock</h3>
+<div class="price">Rp 24.500</div>
+<input type="number" id="gt2" value="1" min="1"><br>
+<button onclick="generateReceipt('Growtopia - Blue Gem Lock',24500,'gt2')">Beli</button>
+</div>
 </div>
 
-<!-- CreativePS -->
-<div class="section hidden" id="creativeps">
-<div class="back" onclick="goHome()">⬅ Kembali</div>
-<h1>CreativePS Currency</h1>
+<h2 class="section-title">💎 CreativePS</h2>
 <div class="products">
-<div class="product"><span>Blue Gem Lock - Rp 1.100</span><button onclick="addToCart('CPS Blue Gem Lock',1100)">Tambah</button></div>
-<div class="product"><span>Black Gem Lock - Rp 105.000</span><button onclick="addToCart('Black Gem Lock',107500)">Tambah</button></div>
-<div class="product"><span>Mray - Rp 120.000</span><button onclick="addToCart('Mray',120000)">Tambah</button></div>
-<div class="product"><span>IGL - Rp 30.000</span><button onclick="addToCart('IGL',30000)">Tambah</button></div>
-<div class="product"><span>Creative Coin - Rp 18.000</span><button onclick="addToCart('Creative Coin',18000)">Tambah</button></div>
-<div class="product"><span>Lray - Rp 2.000</span><button onclick="addToCart('Lray',2000)">Tambah</button></div>
-</div>
-<button style="margin-top:30px" onclick="openCheckout()">Checkout</button>
+<div class="card"><h3>Blue Gem Lock</h3><div class="price">Rp 1.100</div><input type="number" id="cp1" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Blue Gem Lock',1100,'cp1')">Beli</button></div>
+<div class="card"><h3>Black Gem Lock</h3><div class="price">Rp 105.000</div><input type="number" id="cp2" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Black Gem Lock',105000,'cp2')">Beli</button></div>
+<div class="card"><h3>Mray</h3><div class="price">Rp 120.000</div><input type="number" id="cp3" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Mray',120000,'cp3')">Beli</button></div>
+<div class="card"><h3>Creative Coin</h3><div class="price">Rp 18.000</div><input type="number" id="cp4" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Creative Coin',18000,'cp4')">Beli</button></div>
+<div class="card"><h3>IGL</h3><div class="price">Rp 30.000</div><input type="number" id="cp5" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - IGL',30000,'cp5')">Beli</button></div>
+<div class="card"><h3>Lray</h3><div class="price">Rp 2.000</div><input type="number" id="cp6" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Lray',2000,'cp6')">Beli</button></div>
 </div>
 
-<!-- CHECKOUT -->
-<div class="section hidden" id="checkout">
-<div class="back" onclick="goHome()">⬅ Kembali</div>
-<h1>Checkout</h1>
-<div class="checkout-box" id="cart-items">Keranjang kosong</div>
+<div id="receiptBox" class="receipt"></div>
 
-<div class="checkout-box">
-<h3>Data Pembeli</h3>
-<input type="text" placeholder="Nama Anda">
-<input type="text" placeholder="Username Game">
-<select>
-<option>DANA</option>
-<option>GoPay</option>
-<option>QRIS</option>
-<option>PayPal</option>
-<option>USDT (BEP20)</option>
-</select>
-</div>
-
-<div class="checkout-box">
-<h3>Metode Pembayaran</h3>
-<p>DANA : 0887-4377-04858</p>
-<p>GoPay : 0813-1549-5903</p>
-<p>PayPal : farhanfaza02@gmail.com</p>
-<p>USDT (BEP20) :<br>0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE</p>
-<h4 style="margin-top:15px">QRIS</h4>
-<img src="qris.png" class="qris-img">
-</div>
-
-<div class="checkout-box">
+<div class="upload-box" id="uploadSection" style="display:none">
 <h3>Upload Bukti Pembayaran</h3>
-<input type="file" accept="image/*">
+<input type="text" id="buyerName" placeholder="Nama Pembeli" required><br>
+<input type="file" id="paymentProof" accept="image/*" required><br>
+<button onclick="sendProof()">Kirim Bukti</button>
+<p id="statusMsg" style="margin-top:10px"></p>
 </div>
 
-<button onclick="finishOrder()">Konfirmasi Pembayaran</button>
-<div class="success" id="success-msg">Pesanan berhasil dikirim! Admin akan memproses segera.</div>
 </div>
 
-<footer>© 2026 Verif Store - Premium Digital Store</footer>
+<div class="modal" id="paymentModal">
+<div class="modal-content">
+<h2>Metode Pembayaran</h2>
+<p><b>DANA:</b> 0887-4377-04858</p>
+<p><b>GoPay:</b> 0813-1549-5903</p>
+<p><b>PayPal:</b> farhanfaza02@gmail.com</p>
+<p><b>USDT (BEP20):</b><br>0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE</p>
+<h3 style="margin-top:20px">QRIS</h3>
+<img src="qris.png" alt="QRIS">
+<button class="close" onclick="closePayment()">Tutup</button>
+</div>
+</div>
+
+<footer>© 2026 Verif Store PRO</footer>
 
 <script>
-let cart=[];
+(function(){emailjs.init("YOUR_PUBLIC_KEY");})();
 
-function openGame(id){
-document.getElementById('home').classList.add('hidden');
-document.getElementById(id).classList.remove('hidden');
-window.scrollTo(0,0);
+function generateReceipt(product, price, qtyId){
+let qty = parseInt(document.getElementById(qtyId).value);
+let unique = Math.floor(Math.random()*900)+100;
+let total = (price * qty) + unique;
+
+let receipt = `\n<b>STRUK PEMBELIAN</b><br><br>Produk: ${product}<br>Jumlah: ${qty}<br>Harga Satuan: Rp${price.toLocaleString()}<br>Kode Unik: ${unique}<br><b>Total Transfer: Rp${total.toLocaleString()}</b><br><br>Transfer sesuai total lalu upload bukti pembayaran di bawah.`;
+
+let box = document.getElementById('receiptBox');
+box.innerHTML = receipt;
+box.style.display='block';
+
+document.getElementById('uploadSection').style.display='block';
+document.getElementById('paymentModal').style.display='flex';
 }
 
-function goHome(){
-document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
-document.getElementById('home').classList.remove('hidden');
-window.scrollTo(0,0);
+function closePayment(){
+document.getElementById('paymentModal').style.display='none';
 }
 
-function addToCart(name,price){
-cart.push({name,price});
-alert(name+' ditambahkan ke keranjang');
+function sendProof(){
+let name = document.getElementById('buyerName').value;
+let file = document.getElementById('paymentProof').files[0];
+if(!name || !file){
+alert("Lengkapi data terlebih dahulu");
+return;
 }
 
-function openCheckout(){
-document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
-document.getElementById('checkout').classList.remove('hidden');
-renderCart();
-window.scrollTo(0,0);
-}
-
-function renderCart(){
-let box=document.getElementById('cart-items');
-if(cart.length==0){box.innerHTML='Keranjang kosong';return}
-let total=0;let html='';
-cart.forEach(item=>{total+=item.price;html+=item.name+' - Rp '+item.price+'<br>'});
-html+='<hr><b>Total: Rp '+total+'</b>';
-box.innerHTML=html;
-}
-
-function finishOrder(){
-document.getElementById('success-msg').style.display='block';
-cart=[];
+let reader = new FileReader();
+reader.onload = function(){
+emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
+buyer_name: name,
+proof_image: reader.result
+}).then(function(){
+document.getElementById('statusMsg').innerHTML="Bukti berhasil dikirim!";
+});
+};
+reader.readAsDataURL(file);
 }
 </script>
 
