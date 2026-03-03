@@ -3,51 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verif Store - PRO Version</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<title>Verif Store • Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f0f0f,#111827,#0f172a);color:white}
-header{padding:20px 30px}
-.logo{font-size:22px;font-weight:700;background:linear-gradient(90deg,#00ffcc,#6a00ff);-webkit-background-clip:text;color:transparent}
-.container{max-width:1100px;margin:auto;padding:40px 20px}
-.section-box{margin-top:60px;padding:30px;border-radius:25px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)}
-.section-title{font-size:26px;margin-bottom:25px;text-align:center}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a,#0b1220,#020617);color:white}
+header{padding:20px 30px;text-align:center}
+.logo{font-size:22px;font-weight:700;background:linear-gradient(90deg,#00აფრთხcc,#6a00ff);-webkit-background-clip:text;color:transparent}
+.container{max-width:1100px;margin:auto;padding:20px}
+.section{margin-top:60px;padding:30px;border-radius:25px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+.section h2{text-align:center;margin-bottom:30px;font-size:28px}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
 .card{background:rgba(255,255,255,0.05);border-radius:18px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.08);transition:0.3s}
-.card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(106,0,255,0.4)}
+.card:hover{transform:translateY(-5px);box-shadow:0 0 25px rgba(106,0,255,0.4)}
 .price{color:#00ffcc;margin:10px 0;font-weight:600}
-input,button{padding:8px;border-radius:8px;border:none;margin-top:8px}
-input{width:70px;text-align:center}
-button{background:#00ffcc;font-weight:600;cursor:pointer}
+input{padding:8px;border-radius:8px;border:none;width:70px;text-align:center;margin-top:8px}
+button{padding:8px 14px;border-radius:8px;border:none;background:#00ffcc;font-weight:600;cursor:pointer;margin-top:8px}
 button:hover{opacity:0.8}
-.receipt{background:#0f172a;padding:15px;border-radius:12px;margin-top:30px;display:none}
+.receipt{background:#0f172a;padding:15px;border-radius:12px;margin-top:40px;display:none}
 .upload-box{margin-top:20px;padding:15px;background:#111827;border-radius:12px;display:none}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;padding:20px}
-.modal-content{background:#111827;padding:30px;border-radius:20px;max-width:500px;width:100%;text-align:center}
-.modal-content img{width:100%;border-radius:15px;margin-top:15px}
-.close{margin-top:20px;background:red;color:white;padding:10px 15px;border:none;border-radius:8px;cursor:pointer}
-footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px}
+footer{text-align:center;padding:40px;margin-top:80px;opacity:0.5;font-size:12px}
 </style>
 </head>
 <body>
 
 <header>
-<div class="logo">VERIF STORE PRO</div>
+<div class="logo">VERIF STORE</div>
 </header>
 
 <div class="container">
 
 <!-- GROWTOpIA SECTION -->
-<div class="section-box">
-<h2 class="section-title">🌱 Growtopia</h2>
+<div class="section" id="growtopia">
+<h2>🌱 Growtopia</h2>
 <div class="products">
 
 <div class="card">
 <h3>Diamond Lock</h3>
 <div class="price">Rp 245</div>
-<input type="number" id="gt1" value="1" min="1"><br>
+<input type="number" id="gt1熟女" value="1" min="1"><br>
 <button onclick="generateReceipt('Growtopia - Diamond Lock',245,'gt1')">Beli</button>
 </div>
 
@@ -62,8 +56,8 @@ footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px
 </div>
 
 <!-- CREATIVEPS SECTION -->
-<div class="section-box">
-<h2 class="section-title">💎 CreativePS</h2>
+<div class="section" id="creativeps">
+<h2>💎 CreativePS</h2>
 <div class="products">
 
 <div class="card"><h3>Blue Gem Lock</h3><div class="price">Rp 1.100</div><input type="number" id="cp1" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Blue Gem Lock',1100,'cp1')">Beli</button></div>
@@ -72,7 +66,7 @@ footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px
 
 <div class="card"><h3>Mray</h3><div class="price">Rp 120.000</div><input type="number" id="cp3" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Mray',120000,'cp3')">Beli</button></div>
 
-<div class="card"><h3>Creative Coin</h3><div class="price">Rp 18.000</div><input type="number" id="cp4" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Creative Coin',18000,'cp4')">Beli</button></div>
+<div class="card"><h3>Creative Coin</h3><div class="price">Rp 18.000</div><input type="number" id="cp4" value="1" min remunerate"><br><button onclick="generateReceipt('CreativePS - Creative Coin',18000,'cp4')">Beli</button></div>
 
 <div class="card"><h3>IGL</h3><div class="price">Rp 30.000</div><input type="number" id="cp5" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - IGL',30000,'cp5')">Beli</button></div>
 
@@ -93,24 +87,11 @@ footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px
 
 </div>
 
-<div class="modal" id="paymentModal">
-<div class="modal-content">
-<h2>Metode Pembayaran</h2>
-<p><b>DANA:</b> 0887-4377-04858</p>
-<p><b>GoPay:</b> 0813-1549-5903</p>
-<p><b>PayPal:</b> farhanfaza02@gmail.com</p>
-<p><b>USDT (BEP20):</b><br>0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE</p>
-<h3 style="margin-top:20px">QRIS</h3>
-<img src="qris.png" alt="QRIS">
-<button class="close" onclick="closePayment()">Tutup</button>
-</div>
-</div>
-
-<footer>© 2026 Verif Store PRO</footer>
+<footer>
+© 2026 Verif Store • Secure • Trusted • Fast Delivery
+</footer>
 
 <script>
-(function(){emailjs.init("YOUR_PUBLIC_KEY");})();
-
 function generateReceipt(product, price, qtyId){
 let qty = parseInt(document.getElementById(qtyId).value);
 let unique = Math.floor(Math.random()*900)+100;
@@ -123,11 +104,7 @@ box.innerHTML = receipt;
 box.style.display='block';
 
 document.getElementById('uploadSection').style.display='block';
-document.getElementById('paymentModal').style.display='flex';
-}
-
-function closePayment(){
-document.getElementById('paymentModal').style.display='none';
+window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 function sendProof(){
@@ -135,16 +112,7 @@ let name = document.getElementById('buyerName').value;
 let file = document.getElementById('paymentProof').files[0];
 if(!name || !file){alert("Lengkapi data terlebih dahulu");return;}
 
-let reader = new FileReader();
-reader.onload = function(){
-emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
-buyer_name: name,
-proof_image: reader.result
-}).then(function(){
-document.getElementById('statusMsg').innerHTML="Bukti berhasil dikirim!";
-});
-};
-reader.readAsDataURL(file);
+document.getElementById('statusMsg').innerHTML="Bukti berhasil dikirim (simulasi).";
 }
 </script>
 
