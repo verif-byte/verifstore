@@ -12,16 +12,18 @@ body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f0f0f,
 header{padding:20px 30px}
 .logo{font-size:22px;font-weight:700;background:linear-gradient(90deg,#00ffcc,#6a00ff);-webkit-background-clip:text;color:transparent}
 .container{max-width:1100px;margin:auto;padding:40px 20px}
-.section-title{margin-top:40px;margin-bottom:20px;font-size:22px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-.card{background:rgba(255,255,255,0.05);border-radius:20px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.08)}
-.price{color:#00ffcc;margin-bottom:10px;font-weight:600}
+.section-box{margin-top:60px;padding:30px;border-radius:25px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)}
+.section-title{font-size:26px;margin-bottom:25px;text-align:center}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:rgba(255,255,255,0.05);border-radius:18px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.08);transition:0.3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(106,0,255,0.4)}
+.price{color:#00ffcc;margin:10px 0;font-weight:600}
 input,button{padding:8px;border-radius:8px;border:none;margin-top:8px}
-input{width:80px;text-align:center}
+input{width:70px;text-align:center}
 button{background:#00ffcc;font-weight:600;cursor:pointer}
 button:hover{opacity:0.8}
-.receipt{background:#0f172a;padding:15px;border-radius:12px;margin-top:20px;display:none}
-.upload-box{margin-top:20px;padding:15px;background:#111827;border-radius:12px}
+.receipt{background:#0f172a;padding:15px;border-radius:12px;margin-top:30px;display:none}
+.upload-box{margin-top:20px;padding:15px;background:#111827;border-radius:12px;display:none}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;padding:20px}
 .modal-content{background:#111827;padding:30px;border-radius:20px;max-width:500px;width:100%;text-align:center}
 .modal-content img{width:100%;border-radius:15px;margin-top:15px}
@@ -37,38 +39,54 @@ footer{text-align:center;padding:30px;margin-top:80px;opacity:0.5;font-size:12px
 
 <div class="container">
 
+<!-- GROWTOpIA SECTION -->
+<div class="section-box">
 <h2 class="section-title">🌱 Growtopia</h2>
 <div class="products">
+
 <div class="card">
 <h3>Diamond Lock</h3>
 <div class="price">Rp 245</div>
 <input type="number" id="gt1" value="1" min="1"><br>
 <button onclick="generateReceipt('Growtopia - Diamond Lock',245,'gt1')">Beli</button>
 </div>
+
 <div class="card">
 <h3>Blue Gem Lock</h3>
 <div class="price">Rp 24.500</div>
 <input type="number" id="gt2" value="1" min="1"><br>
 <button onclick="generateReceipt('Growtopia - Blue Gem Lock',24500,'gt2')">Beli</button>
 </div>
+
+</div>
 </div>
 
+<!-- CREATIVEPS SECTION -->
+<div class="section-box">
 <h2 class="section-title">💎 CreativePS</h2>
 <div class="products">
+
 <div class="card"><h3>Blue Gem Lock</h3><div class="price">Rp 1.100</div><input type="number" id="cp1" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Blue Gem Lock',1100,'cp1')">Beli</button></div>
+
 <div class="card"><h3>Black Gem Lock</h3><div class="price">Rp 105.000</div><input type="number" id="cp2" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Black Gem Lock',105000,'cp2')">Beli</button></div>
+
 <div class="card"><h3>Mray</h3><div class="price">Rp 120.000</div><input type="number" id="cp3" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Mray',120000,'cp3')">Beli</button></div>
+
 <div class="card"><h3>Creative Coin</h3><div class="price">Rp 18.000</div><input type="number" id="cp4" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Creative Coin',18000,'cp4')">Beli</button></div>
+
 <div class="card"><h3>IGL</h3><div class="price">Rp 30.000</div><input type="number" id="cp5" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - IGL',30000,'cp5')">Beli</button></div>
+
 <div class="card"><h3>Lray</h3><div class="price">Rp 2.000</div><input type="number" id="cp6" value="1" min="1"><br><button onclick="generateReceipt('CreativePS - Lray',2000,'cp6')">Beli</button></div>
+
+</div>
 </div>
 
 <div id="receiptBox" class="receipt"></div>
 
-<div class="upload-box" id="uploadSection" style="display:none">
+<div id="uploadSection" class="upload-box">
 <h3>Upload Bukti Pembayaran</h3>
-<input type="text" id="buyerName" placeholder="Nama Pembeli" required><br>
-<input type="file" id="paymentProof" accept="image/*" required><br>
+<input type="text" id="buyerName" placeholder="Nama Pembeli"><br>
+<input type="file" id="paymentProof" accept="image/*"><br>
 <button onclick="sendProof()">Kirim Bukti</button>
 <p id="statusMsg" style="margin-top:10px"></p>
 </div>
@@ -115,10 +133,7 @@ document.getElementById('paymentModal').style.display='none';
 function sendProof(){
 let name = document.getElementById('buyerName').value;
 let file = document.getElementById('paymentProof').files[0];
-if(!name || !file){
-alert("Lengkapi data terlebih dahulu");
-return;
-}
+if(!name || !file){alert("Lengkapi data terlebih dahulu");return;}
 
 let reader = new FileReader();
 reader.onload = function(){
