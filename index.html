@@ -9,34 +9,28 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#0b1220;color:#fff;overflow:hidden}
+header{position:fixed;top:0;width:100%;background:#111827;padding:15px;text-align:center;font-weight:700;z-index:1000}
 
-/* HEADER */
-header{position:fixed;top:0;width:100%;background:#111827;padding:15px;text-align:center;font-weight:700;letter-spacing:1px;z-index:1000}
-
-/* SLIDER */
 .slider{display:flex;width:600%;height:100vh;transition:.5s}
 .slide{width:100%;flex-shrink:0;padding:100px 20px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 
 h1{margin-bottom:20px;font-size:26px}
-p{opacity:.8;margin-bottom:15px}
+.card{background:#1f2937;border-radius:14px;width:100%;max-width:360px;margin:12px 0;cursor:pointer;overflow:hidden;transition:.3s}
+.card:hover{transform:scale(1.03)}
+.card img{width:100%;height:140px;object-fit:cover}
+.card h3{padding:15px}
 
-.card{background:#1f2937;padding:25px;border-radius:14px;width:100%;max-width:360px;margin:10px 0;cursor:pointer;transition:.3s}
-.card:hover{background:#273449}
-
-select,input{width:100%;max-width:360px;padding:12px;margin:8px 0;border-radius:8px;border:none;font-size:14px}
-
-button{padding:12px 20px;margin-top:15px;border:none;border-radius:8px;background:#06b6d4;color:#fff;font-weight:600;cursor:pointer;width:100%;max-width:360px}
+select,input{width:100%;max-width:360px;padding:12px;margin:8px 0;border-radius:8px;border:none}
+button{padding:12px;margin-top:12px;border:none;border-radius:8px;background:#06b6d4;color:white;font-weight:600;cursor:pointer;width:100%;max-width:360px}
 button:hover{background:#0891b2}
+.back{background:#374151}
 
 .progress{position:fixed;top:60px;width:100%;display:flex;justify-content:center;gap:10px}
-.step{width:40px;height:6px;background:#334155;border-radius:5px;transition:.3s}
+.step{width:40px;height:6px;background:#334155;border-radius:5px}
 .step.active{background:#06b6d4}
 
-.qris{width:220px;margin-top:15px;border-radius:12px}
 .struk{background:#111827;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:left}
-
-.back{background:#374151;margin-top:10px}
-.back:hover{background:#4b5563}
+.qris{width:220px;margin-top:15px;border-radius:12px}
 
 footer{position:absolute;bottom:15px;font-size:12px;opacity:.5}
 </style>
@@ -56,31 +50,43 @@ footer{position:absolute;bottom:15px;font-size:12px;opacity:.5}
 
 <div class="slider" id="slider">
 
-<!-- SLIDE 1 : PILIH GAME -->
+<!-- SLIDE 1 -->
 <div class="slide">
 <h1>Pilih Game</h1>
-<div class="card" onclick="selectGame('growtopia')">Growtopia</div>
-<div class="card" onclick="selectGame('creativeps')">CreativePS</div>
+<div class="card" onclick="selectGame('growtopia')">
+<img src="https://i.imgur.com/3ZQ3Z9L.jpg">
+<h3>Growtopia</h3>
+</div>
+<div class="card" onclick="selectGame('creativeps')">
+<img src="https://i.imgur.com/7yUvePI.jpg">
+<h3>CreativePS</h3>
+</div>
 </div>
 
-<!-- SLIDE 2 : PILIH AKSI -->
+<!-- SLIDE 2 -->
 <div class="slide">
 <h1>Pilih Transaksi</h1>
-<div class="card" onclick="setMode('beli')">Beli Produk</div>
-<div class="card" onclick="setMode('jual')">Kami Membeli</div>
+<div class="card" onclick="setMode('beli')">
+<img src="https://i.imgur.com/Hh9XqkC.png">
+<h3>Beli Produk</h3>
+</div>
+<div class="card" onclick="setMode('jual')">
+<img src="https://i.imgur.com/2pYl6aX.png">
+<h3>Kami Membeli</h3>
+</div>
 <button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 3 : PRODUK -->
+<!-- SLIDE 3 -->
 <div class="slide">
-<h1 id="titleProduk">Pilih Produk</h1>
+<h1>Pilih Produk</h1>
 <select id="product"></select>
 <input type="number" id="qty" value="1" min="1">
 <button onclick="buatStruk()">Lanjut Pembayaran</button>
 <button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 4 : STRUK -->
+<!-- SLIDE 4 -->
 <div class="slide">
 <h1>Detail Pembayaran</h1>
 <div class="struk" id="strukBox"></div>
@@ -89,20 +95,19 @@ footer{position:absolute;bottom:15px;font-size:12px;opacity:.5}
 <button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 5 : WORLD & OWNER -->
+<!-- SLIDE 5 -->
 <div class="slide">
 <h1>Detail Pengiriman</h1>
-<input type="text" id="world" placeholder="Nama World">
-<input type="text" id="owner" placeholder="Nama Owner">
-<button onclick="nextSlide()">Lanjut Upload Bukti</button>
+<input type="text" placeholder="Nama World">
+<input type="text" placeholder="Nama Owner">
+<button onclick="nextSlide()">Lanjut Upload</button>
 <button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 6 : UPLOAD -->
+<!-- SLIDE 6 -->
 <div class="slide">
 <h1>Upload Bukti Transfer</h1>
 <input type="file">
-<p>Pesanan akan diproses setelah diverifikasi.</p>
 <footer>© 2026 Verif Store</footer>
 </div>
 
@@ -119,7 +124,7 @@ function updateStep(){steps.forEach((s,i)=>s.classList.toggle('active',i<=curren
 function nextSlide(){if(current<5){current++;slider.style.transform=`translateX(-${current*100}%)`;updateStep();}}
 function prevSlide(){if(current>0){current--;slider.style.transform=`translateX(-${current*100}%)`;updateStep();}}
 
-function selectGame(game){selectedGame=game;nextSlide();}
+function selectGame(g){selectedGame=g;nextSlide();}
 function setMode(m){mode=m;loadProduk();nextSlide();}
 
 const harga={
