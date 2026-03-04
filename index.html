@@ -1,244 +1,147 @@
-// =====================================================
-// VERIF STORE - ULTIMATE FULL PRODUCTION (ALL-IN-ONE)
-// Stack: Node.js + Express + MongoDB + JWT + Admin Panel
-// Single File Version (Simple Deployment)
-// =====================================================
-
-// ================= INSTALL =================
-// 1. Install Node.js
-// 2. npm init -y
-// 3. npm install express mongoose bcryptjs jsonwebtoken cors dotenv uuid axios
-// 4. Create .env file:
-//    MONGO_URI=your_mongodb_connection
-//    JWT_SECRET=supersecretkey
-//    ADMIN_SECRET=adminaccesskey
-//    DISCORD_WEBHOOK=optional_webhook_url
-// 5. node server.js
-// ===========================================
-
-require('dotenv').config()
-const express = require('express')
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const cors = require('cors')
-const { v4: uuidv4 } = require('uuid')
-const axios = require('axios')
-
-const app = express()
-app.use(cors())
-app.use(express.json())
-
-// ================= DATABASE =================
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>console.log("MongoDB Connected"))
-.catch(err=>console.log(err))
-
-// ================= MODELS =================
-const User = mongoose.model('User', new mongoose.Schema({
- username:String,
- email:String,
- password:String,
- role:{ type:String, default:"user" }
-}))
-
-const Product = mongoose.model('Product', new mongoose.Schema({
- name:String,
- game:String,
- price:Number,
- stock:{ type:Number, default:9999 }
-}))
-
-const Order = mongoose.model('Order', new mongoose.Schema({
- orderId:String,
- userId:String,
- items:Array,
- total:Number,
- paymentMethod:String,
- paymentStatus:{ type:String, default:"UNPAID" },
- status:{ type:String, default:"PENDING" },
- createdAt:{ type:Date, default:Date.now }
-}))
-
-// ================= MIDDLEWARE =================
-function auth(req,res,next){
- const token = req.headers.authorization
- if(!token) return res.status(401).json({msg:"No Token"})
- try{
-  const decoded = jwt.verify(token,process.env.JWT_SECRET)
-  req.user = decoded
-  next()
- }catch{
-  res.status(401).json({msg:"Invalid Token"})
- }
-}
-
-function adminAuth(req,res,next){
- if(req.headers.adminsecret !== process.env.ADMIN_SECRET)
-  return res.status(403).json({msg:"Admin access denied"})
- next()
-}
-
-// ================= AUTH =================
-app.post('/api/register', async(req,res)=>{
- const {username,email,password} = req.body
- const hashed = await bcrypt.hash(password,10)
- await User.create({username,email,password:hashed})
- res.json({msg:"Registered"})
-})
-
-app.post('/api/login', async(req,res)=>{
- const {email,password} = req.body
- const user = await User.findOne({email})
- if(!user) return res.status(400).json({msg:"User not found"})
- const valid = await bcrypt.compare(password,user.password)
- if(!valid) return res.status(400).json({msg:"Wrong password"})
- const token = jwt.sign({id:user._id,role:user.role},process.env.JWT_SECRET)
- res.json({token})
-})
-
-// ================= PRODUCTS =================
-app.get('/api/products', async(req,res)=>{
- res.json(await Product.find())
-})
-
-app.post('/api/admin/add-product', adminAuth, async(req,res)=>{
- await Product.create(req.body)
- res.json({msg:"Product Added"})
-})
-
-// ================= CHECKOUT =================
-app.post('/api/checkout', auth, async(req,res)=>{
- const {items,paymentMethod} = req.body
- const total = items.reduce((sum,i)=>sum+i.price,0)
-
- const order = await Order.create({
-  orderId:uuidv4(),
-  userId:req.user.id,
-  items,
-  total,
-  paymentMethod
- })
-
- // Discord Notification (Optional)
- if(process.env.DISCORD_WEBHOOK){
-  await axios.post(process.env.DISCORD_WEBHOOK,{
-   content:`New Order ${order.orderId} - Rp ${total}`
-  })
- }
-
- res.json({
-  msg:"Order Created",
-  orderId:order.orderId,
-  paymentInstruction:`Pay ${total} via ${paymentMethod}`
- })
-})
-
-// ================= PAYMENT CONFIRM (SIMULATED) =================
-app.post('/api/payment-confirm', async(req,res)=>{
- const {orderId} = req.body
- await Order.findOneAndUpdate({orderId},{paymentStatus:"PAID",status:"PROCESSING"})
- res.json({msg:"Payment Confirmed"})
-})
-
-// ================= ADMIN DASHBOARD DATA =================
-app.get('/api/admin/orders', adminAuth, async(req,res)=>{
- res.json(await Order.find().sort({createdAt:-1}))
-})
-
-// ================= FRONTEND =================
-app.get('/',(req,res)=>{
-res.send(`
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Verif Store Ultimate</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+<title>VERIF STORE - Ultimate Single Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Poppins;background:#0f172a;color:white;overflow-x:hidden}
-header{position:fixed;width:100%;padding:20px;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);display:flex;justify-content:space-between;z-index:10}
-.logo{font-weight:800;color:#38bdf8}
-.hero{height:100vh;display:flex;justify-content:center;align-items:center;text-align:center;position:relative}
-.slide{position:absolute;width:100%;height:100%;background:linear-gradient(45deg,#0ea5e9,#9333ea,#f43f5e,#22c55e);background-size:600% 600%;animation:glow 12s ease infinite;z-index:-1}
-@keyframes glow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.products{padding:120px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-.card{background:#1e293b;padding:20px;border-radius:15px;box-shadow:0 0 20px rgba(0,255,255,0.2);transition:.3s}
-.card:hover{transform:translateY(-10px);box-shadow:0 0 40px rgba(147,51,234,.7)}
-button{background:#38bdf8;border:none;padding:10px 15px;border-radius:8px;font-weight:600;cursor:pointer}
-.cart{position:fixed;bottom:20px;right:20px;background:#111827;padding:20px;border-radius:15px;width:300px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
+body{background:#0a0a0f;color:#fff}
+.container{max-width:1100px;margin:auto;padding:40px 20px}
+h1{text-align:center;margin-bottom:40px;font-size:40px;text-shadow:0 0 20px #00f0ff}
+.section-box{
+background:linear-gradient(135deg,#141e30,#243b55);
+padding:30px;
+border-radius:25px;
+box-shadow:0 0 40px rgba(0,255,255,.4);
+animation:glow 6s infinite alternate;
+}
+@keyframes glow{
+from{box-shadow:0 0 30px #00f0ff}
+to{box-shadow:0 0 60px #ff00ff}
+}
+select,input{padding:12px;border-radius:12px;border:none;margin:8px 0;width:100%}
+button{padding:12px;background:#00f0ff;border:none;border-radius:30px;width:100%;font-weight:bold;cursor:pointer;box-shadow:0 0 20px #00f0ff}
+button:hover{transform:scale(1.05)}
+.invoice,.proof-box{
+margin-top:20px;
+padding:20px;
+border-radius:15px;
+background:#000;
+box-shadow:0 0 25px #00ffea;
+}
+.qris{
+margin-top:20px;
+text-align:center;
+}
+.qris img{width:250px;border-radius:20px;box-shadow:0 0 30px #00f0ff}
+.buyback{margin-top:40px;padding:20px;background:#111;border-radius:20px;box-shadow:0 0 25px #ff00ff}
+.highlight{text-align:center;margin:15px 0;font-size:20px;text-shadow:0 0 15px #ff00ff}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">VERIF STORE</div>
-<div>Ultimate Marketplace</div>
-</header>
+<div class="container">
+<h1>VERIF STORE</h1>
 
-<section class="hero">
-<div class="slide"></div>
-<div>
-<h1>Professional Game Marketplace</h1>
-<p>Secure • Fast • Trusted</p>
-</div>
-</section>
+<div class="section-box">
 
-<section class="products" id="products"></section>
-
-<div class="cart">
-<h3>Cart</h3>
-<ul id="cartList"></ul>
-<select id="payment">
-<option>Dana</option>
-<option>Gopay</option>
-<option>Paypal</option>
-<option>Crypto</option>
-<option>QRIS</option>
+<h2>Pilih Produk</h2>
+<select id="game" onchange="loadProducts()">
+<option value="Growtopia">Growtopia</option>
+<option value="CreativePS">CreativePS</option>
 </select>
-<br><br>
-<button onclick="checkout()">Checkout</button>
+
+<select id="product"></select>
+<input type="number" id="qty" placeholder="Jumlah Pembelian" value="1">
+<button onclick="checkout()">Buat Struk Pembelian</button>
+
+<div id="invoice"></div>
+
+<div class="qris">
+<h3>Scan QRIS Untuk Bayar</h3>
+<img src="qris.png" alt="QRIS">
+<p style="margin-top:10px;font-size:13px;opacity:.7">Upload file QRIS dan rename menjadi <b>qris.png</b></p>
+</div>
+
+<div class="proof-box">
+<h3>Kirim Bukti Screenshot Setelah Transfer</h3>
+<input type="file">
+<p style="font-size:12px;opacity:.7">(Upload bukti manual setelah bayar)</p>
+</div>
+
+<div class="buyback">
+<h2>Kami Juga Membeli</h2>
+
+<h3>Growtopia</h3>
+<p>Diamond Lock - Rp 230</p>
+<p>Blue Gem Lock - Rp 23.000</p>
+<div class="highlight">Put in World: HANVYR</div>
+<div class="highlight">Name Owner: HANVYR</div>
+
+<h3 style="margin-top:25px">CreativePS</h3>
+<p>Blue Gem Lock - Rp 900</p>
+<p>Black Gem Lock - Rp 95.000</p>
+<div class="highlight">Put in World: PAY</div>
+<div class="highlight">Name Owner: VERIF</div>
+
+</div>
+
+</div>
 </div>
 
 <script>
-let cart=[]
-let token=""
+const products={
+Growtopia:{
+"Diamond Lock":245,
+"Blue Gem Lock":24500
+},
+CreativePS:{
+"Blue Gem Lock":1100,
+"Black Gem Lock":105000,
+"Creative Coin":18000,
+"Mray":120000,
+"IGL":30000,
+"Lray":2000
+}
+};
 
-async function loadProducts(){
- const res=await fetch('/api/products')
- const data=await res.json()
- const container=document.getElementById('products')
- data.forEach(p=>{
-  container.innerHTML+=`<div class="card"><h3>${p.name}</h3><p>${p.game}</p><p>Rp ${p.price}</p><button onclick='addToCart(${JSON.stringify(p)})'>Add</button></div>`
- })
+function loadProducts(){
+const game=document.getElementById('game').value;
+const productSelect=document.getElementById('product');
+productSelect.innerHTML='';
+for(let item in products[game]){
+const option=document.createElement('option');
+option.value=item;
+option.textContent=item+" - Rp "+products[game][item].toLocaleString();
+productSelect.appendChild(option);
+}
 }
 
-function addToCart(p){cart.push(p);renderCart()}
-function renderCart(){
- const list=document.getElementById('cartList')
- list.innerHTML=""
- cart.forEach(i=>{list.innerHTML+=`<li>${i.name} - Rp ${i.price}</li>`})
+function checkout(){
+const game=document.getElementById('game').value;
+const product=document.getElementById('product').value;
+const qty=parseInt(document.getElementById('qty').value);
+const price=products[game][product];
+const total=price*qty;
+const code=Math.floor(Math.random()*900)+100;
+const finalTotal=total+code;
+
+document.getElementById('invoice').innerHTML=`
+<div class='invoice'>
+<h3>STRUK PEMBELIAN</h3>
+<p>Game: ${game}</p>
+<p>Produk: ${product}</p>
+<p>Jumlah: ${qty}</p>
+<p>Total: Rp ${total.toLocaleString()}</p>
+<p>Kode Unik: ${code}</p>
+<h3>Total Transfer: Rp ${finalTotal.toLocaleString()}</h3>
+<p>Status: MENUNGGU PEMBAYARAN</p>
+</div>`;
 }
 
-async function checkout(){
- if(!token){alert('Login dulu via API');return}
- const payment=document.getElementById('payment').value
- const res=await fetch('/api/checkout',{
-  method:'POST',
-  headers:{'Content-Type':'application/json','Authorization':token},
-  body:JSON.stringify({items:cart,paymentMethod:payment})
- })
- const data=await res.json()
- alert(data.paymentInstruction)
- cart=[]
- renderCart()
-}
-
-loadProducts()
+loadProducts();
 </script>
 
 </body>
 </html>
-`)
-})
-
-app.listen(3000,()=>console.log("Verif Store Ultimate running on http://localhost:3000"))
