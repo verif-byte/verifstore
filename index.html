@@ -3,194 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VERIF STORE</title>
+<title>Verif Store</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:#0b0f1a;color:#fff;overflow-x:hidden}
+body{background:#0f172a;color:white;overflow:hidden}
 
-/* SLIDE SYSTEM */
-.slide{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:40px 20px;
-  text-align:center;
-}
+.slider{display:flex;width:400%;height:100vh;transition:0.5s}
+.slide{width:100%;flex-shrink:0;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center}
 
-.slide:nth-child(odd){background:linear-gradient(135deg,#141e30,#243b55)}
-.slide:nth-child(even){background:linear-gradient(135deg,#1f1c2c,#928dab)}
+h1{margin-bottom:20px;font-size:28px}
+select,input{width:90%;max-width:300px;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:14px}
+button{padding:12px 20px;margin-top:15px;border:none;border-radius:8px;background:#06b6d4;color:white;font-weight:600;cursor:pointer}
+button:hover{background:#0891b2}
 
-h1{font-size:42px;margin-bottom:20px}
-h2{font-size:30px;margin-bottom:20px}
-h3{font-size:22px;margin:10px 0}
-p{font-size:16px;margin:5px 0}
-
-button{
-  padding:12px 25px;
-  border:none;
-  border-radius:30px;
-  background:#00e5ff;
-  font-weight:600;
-  cursor:pointer;
-  margin-top:15px;
-}
-button:hover{background:#00bcd4}
-
-select,input{
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  width:280px;
-  margin:8px 0;
-}
-
-.invoice{
-  margin-top:20px;
-  background:#000;
-  padding:20px;
-  border-radius:15px;
-  width:300px;
-}
-
-.qris img{
-  width:250px;
-  margin-top:15px;
-  border-radius:15px;
-}
-
-.highlight{
-  font-size:20px;
-  font-weight:600;
-  margin:10px 0;
-}
+.card{background:#1e293b;padding:20px;border-radius:12px;width:90%;max-width:350px;text-align:center}
+.qris{width:200px;margin-top:15px}
+.nav-btn{position:absolute;bottom:30px}
 </style>
 </head>
-
 <body>
 
-<!-- SLIDE 1: HERO -->
-<section class="slide">
-<h1>VERIF STORE</h1>
-<p>Marketplace Growtopia & CreativePS</p>
-<button onclick="document.getElementById('jual').scrollIntoView({behavior:'smooth'})">Mulai</button>
-</section>
+<div class="slider" id="slider">
 
-<!-- SLIDE 2: PRODUK DIJUAL -->
-<section class="slide" id="jual">
-<h2>Produk Dijual</h2>
-<h3>Growtopia</h3>
-<p>Diamond Lock - Rp 245</p>
-<p>Blue Gem Lock - Rp 24.500</p>
-
-<h3 style="margin-top:20px">CreativePS</h3>
-<p>Blue Gem Lock - Rp 1.100</p>
-<p>Black Gem Lock - Rp 105.000</p>
-<p>Creative Coin - Rp 18.000</p>
-<p>Mray - Rp 120.000</p>
-<p>IGL - Rp 30.000</p>
-<p>Lray - Rp 2.000</p>
-
-<button onclick="document.getElementById('beli').scrollIntoView({behavior:'smooth'})">Beli Sekarang</button>
-</section>
-
-<!-- SLIDE 3: FORM PEMBELIAN -->
-<section class="slide" id="beli">
-<h2>Form Pembelian</h2>
-
-<select id="game" onchange="loadProducts()">
-<option value="Growtopia">Growtopia</option>
-<option value="CreativePS">CreativePS</option>
+<!-- SLIDE 1 -->
+<div class="slide">
+<h1>Pilih Game</h1>
+<select id="game">
+<option value="growtopia">Growtopia</option>
+<option value="creativeps">CreativePS</option>
 </select>
-
-<select id="product"></select>
-<input type="number" id="qty" value="1" placeholder="Jumlah">
-<button onclick="checkout()">Buat Struk</button>
-
-<div id="invoice"></div>
-
-<button onclick="document.getElementById('bayar').scrollIntoView({behavior:'smooth'})">Lanjut Bayar</button>
-</section>
-
-<!-- SLIDE 4: QRIS -->
-<section class="slide" id="bayar">
-<h2>Pembayaran QRIS</h2>
-<div class="qris">
-<img src="qris.png" alt="QRIS">
-<p>Scan QR untuk transfer</p>
+<button onclick="nextSlide()">Lanjut</button>
 </div>
-<button onclick="document.getElementById('bukti').scrollIntoView({behavior:'smooth'})">Kirim Bukti</button>
-</section>
 
-<!-- SLIDE 5: UPLOAD BUKTI -->
-<section class="slide" id="bukti">
-<h2>Upload Bukti Transfer</h2>
+<!-- SLIDE 2 -->
+<div class="slide">
+<h1>Pilih Produk</h1>
+<select id="product"></select>
+<input type="number" id="qty" placeholder="Jumlah" value="1">
+<button onclick="generateStruk()">Buat Struk</button>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide">
+<h1>Struk Pembelian</h1>
+<div class="card" id="struk"></div>
+<img src="qris.png" class="qris">
+<button onclick="nextSlide()">Saya Sudah Bayar</button>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide">
+<h1>Upload Bukti Transfer</h1>
 <input type="file">
-<p>(Upload manual setelah bayar)</p>
-<button onclick="document.getElementById('buyback').scrollIntoView({behavior:'smooth'})">Lihat Kami Membeli</button>
-</section>
+<p style="margin-top:20px">Put World & Owner Akan Diproses Otomatis</p>
+</div>
 
-<!-- SLIDE 6: KAMI MEMBELI -->
-<section class="slide" id="buyback">
-<h2>Kami Juga Membeli</h2>
-
-<h3>Growtopia</h3>
-<p>Diamond Lock - Rp 230</p>
-<p>Blue Gem Lock - Rp 23.000</p>
-<div class="highlight">Put in World: HANVYR</div>
-<div class="highlight">Name Owner: HANVYR</div>
-
-<h3 style="margin-top:20px">CreativePS</h3>
-<p>Blue Gem Lock - Rp 900</p>
-<p>Black Gem Lock - Rp 95.000</p>
-<div class="highlight">Put in World: PAY</div>
-<div class="highlight">Name Owner: VERIF</div>
-</section>
+</div>
 
 <script>
+let currentSlide=0;
+const slider=document.getElementById('slider');
+
+function nextSlide(){
+currentSlide++;
+slider.style.transform=`translateX(-${currentSlide*100}%)`;
+}
+
 const products={
-Growtopia:{"Diamond Lock":245,"Blue Gem Lock":24500},
-CreativePS:{"Blue Gem Lock":1100,"Black Gem Lock":105000,"Creative Coin":18000,"Mray":120000,"IGL":30000,"Lray":2000}
+growtopia:[
+{name:"Diamond Lock",price:245},
+{name:"Blue Gem Lock",price:24500}
+],
+creativeps:[
+{name:"Blue Gem Lock",price:1100},
+{name:"Black Gem Lock",price:105000},
+{name:"Creative Coin",price:18000},
+{name:"Mray",price:120000},
+{name:"IGL",price:30000},
+{name:"Lray",price:2000}
+]
 };
 
+const gameSelect=document.getElementById('game');
+const productSelect=document.getElementById('product');
+
 function loadProducts(){
-const game=document.getElementById('game').value;
-const select=document.getElementById('product');
-select.innerHTML='';
-for(let item in products[game]){
-let option=document.createElement('option');
-option.value=item;
-option.textContent=item+" - Rp "+products[game][item].toLocaleString();
-select.appendChild(option);
-}
-}
-
-function checkout(){
-const game=document.getElementById('game').value;
-const product=document.getElementById('product').value;
-const qty=parseInt(document.getElementById('qty').value);
-const price=products[game][product];
-const total=price*qty;
-const code=Math.floor(Math.random()*900)+100;
-const finalTotal=total+code;
-
-document.getElementById('invoice').innerHTML=`
-<div class='invoice'>
-<h3>Struk Pembelian</h3>
-<p>Game: ${game}</p>
-<p>Produk: ${product}</p>
-<p>Jumlah: ${qty}</p>
-<p>Total: Rp ${total.toLocaleString()}</p>
-<p>Kode Unik: ${code}</p>
-<p><strong>Total Transfer: Rp ${finalTotal.toLocaleString()}</strong></p>
-</div>`;
+productSelect.innerHTML="";
+products[gameSelect.value].forEach(p=>{
+let opt=document.createElement('option');
+opt.value=p.price;
+opt.textContent=`${p.name} - Rp ${p.price.toLocaleString()}`;
+productSelect.appendChild(opt);
+});
 }
 
 loadProducts();
+gameSelect.addEventListener('change',loadProducts);
+
+function generateStruk(){
+let price=parseInt(productSelect.value);
+let qty=parseInt(document.getElementById('qty').value);
+let total=price*qty;
+let kode=Math.floor(Math.random()*900)+100;
+let finalTotal=total+kode;
+
+document.getElementById('struk').innerHTML=`
+<p><b>Game:</b> ${gameSelect.value}</p>
+<p><b>Total:</b> Rp ${total.toLocaleString()}</p>
+<p><b>Kode Unik:</b> ${kode}</p>
+<p><b>Transfer:</b> Rp ${finalTotal.toLocaleString()}</p>
+`;
+
+nextSlide();
+}
 </script>
 
 </body>
