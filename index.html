@@ -4,119 +4,160 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verif Store</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:#0f172a;color:white;overflow:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#0b1220;color:#fff;overflow:hidden}
 
-.slider{display:flex;width:400%;height:100vh;transition:0.5s}
-.slide{width:100%;flex-shrink:0;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+/* HEADER */
+header{position:fixed;top:0;width:100%;background:#111827;padding:15px;text-align:center;font-weight:700;letter-spacing:1px;z-index:1000}
 
-h1{margin-bottom:20px;font-size:28px}
-select,input{width:90%;max-width:300px;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:14px}
-button{padding:12px 20px;margin-top:15px;border:none;border-radius:8px;background:#06b6d4;color:white;font-weight:600;cursor:pointer}
+/* SLIDER */
+.slider{display:flex;width:600%;height:100vh;transition:.5s}
+.slide{width:100%;flex-shrink:0;padding:100px 20px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+
+h1{margin-bottom:20px;font-size:26px}
+p{opacity:.8;margin-bottom:15px}
+
+.card{background:#1f2937;padding:25px;border-radius:14px;width:100%;max-width:360px;margin:10px 0;cursor:pointer;transition:.3s}
+.card:hover{background:#273449}
+
+select,input{width:100%;max-width:360px;padding:12px;margin:8px 0;border-radius:8px;border:none;font-size:14px}
+
+button{padding:12px 20px;margin-top:15px;border:none;border-radius:8px;background:#06b6d4;color:#fff;font-weight:600;cursor:pointer;width:100%;max-width:360px}
 button:hover{background:#0891b2}
 
-.card{background:#1e293b;padding:20px;border-radius:12px;width:90%;max-width:350px;text-align:center}
-.qris{width:200px;margin-top:15px}
-.nav-btn{position:absolute;bottom:30px}
+.progress{position:fixed;top:60px;width:100%;display:flex;justify-content:center;gap:10px}
+.step{width:40px;height:6px;background:#334155;border-radius:5px;transition:.3s}
+.step.active{background:#06b6d4}
+
+.qris{width:220px;margin-top:15px;border-radius:12px}
+.struk{background:#111827;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:left}
+
+.back{background:#374151;margin-top:10px}
+.back:hover{background:#4b5563}
+
+footer{position:absolute;bottom:15px;font-size:12px;opacity:.5}
 </style>
 </head>
 <body>
 
+<header>VERIF STORE</header>
+
+<div class="progress">
+<div class="step active"></div>
+<div class="step"></div>
+<div class="step"></div>
+<div class="step"></div>
+<div class="step"></div>
+<div class="step"></div>
+</div>
+
 <div class="slider" id="slider">
 
-<!-- SLIDE 1 -->
+<!-- SLIDE 1 : PILIH GAME -->
 <div class="slide">
 <h1>Pilih Game</h1>
-<select id="game">
-<option value="growtopia">Growtopia</option>
-<option value="creativeps">CreativePS</option>
-</select>
-<button onclick="nextSlide()">Lanjut</button>
+<div class="card" onclick="selectGame('growtopia')">Growtopia</div>
+<div class="card" onclick="selectGame('creativeps')">CreativePS</div>
 </div>
 
-<!-- SLIDE 2 -->
+<!-- SLIDE 2 : PILIH AKSI -->
 <div class="slide">
-<h1>Pilih Produk</h1>
+<h1>Pilih Transaksi</h1>
+<div class="card" onclick="setMode('beli')">Beli Produk</div>
+<div class="card" onclick="setMode('jual')">Kami Membeli</div>
+<button class="back" onclick="prevSlide()">Kembali</button>
+</div>
+
+<!-- SLIDE 3 : PRODUK -->
+<div class="slide">
+<h1 id="titleProduk">Pilih Produk</h1>
 <select id="product"></select>
-<input type="number" id="qty" placeholder="Jumlah" value="1">
-<button onclick="generateStruk()">Buat Struk</button>
+<input type="number" id="qty" value="1" min="1">
+<button onclick="buatStruk()">Lanjut Pembayaran</button>
+<button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 3 -->
+<!-- SLIDE 4 : STRUK -->
 <div class="slide">
-<h1>Struk Pembelian</h1>
-<div class="card" id="struk"></div>
+<h1>Detail Pembayaran</h1>
+<div class="struk" id="strukBox"></div>
 <img src="qris.png" class="qris">
-<button onclick="nextSlide()">Saya Sudah Bayar</button>
+<button onclick="nextSlide()">Saya Sudah Transfer</button>
+<button class="back" onclick="prevSlide()">Kembali</button>
 </div>
 
-<!-- SLIDE 4 -->
+<!-- SLIDE 5 : WORLD & OWNER -->
+<div class="slide">
+<h1>Detail Pengiriman</h1>
+<input type="text" id="world" placeholder="Nama World">
+<input type="text" id="owner" placeholder="Nama Owner">
+<button onclick="nextSlide()">Lanjut Upload Bukti</button>
+<button class="back" onclick="prevSlide()">Kembali</button>
+</div>
+
+<!-- SLIDE 6 : UPLOAD -->
 <div class="slide">
 <h1>Upload Bukti Transfer</h1>
 <input type="file">
-<p style="margin-top:20px">Put World & Owner Akan Diproses Otomatis</p>
+<p>Pesanan akan diproses setelah diverifikasi.</p>
+<footer>© 2026 Verif Store</footer>
 </div>
 
 </div>
 
 <script>
-let currentSlide=0;
+let current=0;
 const slider=document.getElementById('slider');
+const steps=document.querySelectorAll('.step');
+let selectedGame="";
+let mode="";
 
-function nextSlide(){
-currentSlide++;
-slider.style.transform=`translateX(-${currentSlide*100}%)`;
+function updateStep(){steps.forEach((s,i)=>s.classList.toggle('active',i<=current));}
+function nextSlide(){if(current<5){current++;slider.style.transform=`translateX(-${current*100}%)`;updateStep();}}
+function prevSlide(){if(current>0){current--;slider.style.transform=`translateX(-${current*100}%)`;updateStep();}}
+
+function selectGame(game){selectedGame=game;nextSlide();}
+function setMode(m){mode=m;loadProduk();nextSlide();}
+
+const harga={
+growtopia:{
+beli:[{n:'Diamond Lock',p:245},{n:'Blue Gem Lock',p:24500}],
+jual:[{n:'Diamond Lock',p:230},{n:'Blue Gem Lock',p:23000}]
+},
+creativeps:{
+beli:[{n:'Blue Gem Lock',p:1100},{n:'Black Gem Lock',p:105000},{n:'Creative Coin',p:18000},{n:'Mray',p:120000},{n:'IGL',p:30000},{n:'Lray',p:2000}],
+jual:[{n:'Blue Gem Lock',p:900},{n:'Black Gem Lock',p:95000}]
 }
-
-const products={
-growtopia:[
-{name:"Diamond Lock",price:245},
-{name:"Blue Gem Lock",price:24500}
-],
-creativeps:[
-{name:"Blue Gem Lock",price:1100},
-{name:"Black Gem Lock",price:105000},
-{name:"Creative Coin",price:18000},
-{name:"Mray",price:120000},
-{name:"IGL",price:30000},
-{name:"Lray",price:2000}
-]
 };
 
-const gameSelect=document.getElementById('game');
-const productSelect=document.getElementById('product');
-
-function loadProducts(){
-productSelect.innerHTML="";
-products[gameSelect.value].forEach(p=>{
+function loadProduk(){
+let select=document.getElementById('product');
+select.innerHTML="";
+harga[selectedGame][mode].forEach(item=>{
 let opt=document.createElement('option');
-opt.value=p.price;
-opt.textContent=`${p.name} - Rp ${p.price.toLocaleString()}`;
-productSelect.appendChild(opt);
+opt.value=item.p;
+opt.textContent=`${item.n} - Rp ${item.p.toLocaleString()}`;
+select.appendChild(opt);
 });
 }
 
-loadProducts();
-gameSelect.addEventListener('change',loadProducts);
-
-function generateStruk(){
-let price=parseInt(productSelect.value);
+function buatStruk(){
+let price=parseInt(document.getElementById('product').value);
 let qty=parseInt(document.getElementById('qty').value);
 let total=price*qty;
 let kode=Math.floor(Math.random()*900)+100;
-let finalTotal=total+kode;
+let final=total+kode;
 
-document.getElementById('struk').innerHTML=`
-<p><b>Game:</b> ${gameSelect.value}</p>
+document.getElementById('strukBox').innerHTML=`
+<p><b>Game:</b> ${selectedGame}</p>
+<p><b>Transaksi:</b> ${mode}</p>
 <p><b>Total:</b> Rp ${total.toLocaleString()}</p>
 <p><b>Kode Unik:</b> ${kode}</p>
-<p><b>Transfer:</b> Rp ${finalTotal.toLocaleString()}</p>
+<p><b>Transfer:</b> Rp ${final.toLocaleString()}</p>
 `;
-
 nextSlide();
 }
 </script>
