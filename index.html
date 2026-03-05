@@ -3,130 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verif Store</title>
+<title>Verif Store V5</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI}
-body{background:#0b1220;color:white}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0f172a;color:white}
+
+/* NAV */
 nav{
-background:#0f1b2e;
+background:#111827;
+padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 25px;
-position:sticky;top:0;z-index:999
 }
 nav h1{color:#4ea1ff}
-nav .menu span{
-margin-left:20px;cursor:pointer
-}
-.cart{
-background:#1c2d4a;
-padding:8px 15px;
-border-radius:8px;
-cursor:pointer
-}
-.status{
-text-align:center;
-padding:10px;
-background:#2a1a1a;
-color:#ff6b6b;
-display:none
-}
-.container{padding:30px}
-.category{
-display:flex;gap:10px;margin-bottom:20px
-}
-.category button{
-padding:8px 15px;border:none;border-radius:8px;
-background:#1c2d4a;color:white;cursor:pointer
-}
-.category .active{background:#4ea1ff}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px
-}
-.card{
-background:#111c33;
-border-radius:15px;
-padding:15px;
-box-shadow:0 0 15px rgba(78,161,255,.2);
-transition:.3s
-}
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 25px rgba(78,161,255,.5)
-}
-.card img{
-width:100%;
-height:120px;
-object-fit:contain;
-margin-bottom:10px
-}
-.price{
-display:flex;justify-content:space-between;
-font-size:13px;margin:10px 0
-}
-.price span{color:#4ea1ff}
-.btn{
-width:100%;
-padding:8px;
+nav button{
+background:#4ea1ff;
 border:none;
+padding:8px 12px;
 border-radius:8px;
 cursor:pointer;
-margin-top:5px
+color:white;
+margin-left:5px;
 }
-.beli{background:#1e3a8a;color:white}
-.jual{background:transparent;border:1px solid gold;color:gold}
 
+/* SLIDER */
+.slider{
+height:180px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(90deg,#0f172a,#1e3a8a);
+text-align:center;
+}
+.slider h2{color:#4ea1ff}
+
+/* STATUS */
+.status{text-align:center;padding:10px;font-weight:bold}
+.open{color:#22c55e}
+.closed{color:red}
+
+/* PRODUK */
+.container{
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:15px;
+}
+.card{
+background:#1f2937;
+padding:15px;
+border-radius:15px;
+text-align:center;
+transition:0.3s;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 0 15px #4ea1ff}
+.card img{
+width:100px;
+height:100px;
+object-fit:contain;
+margin-bottom:10px;
+animation:float 4s infinite ease-in-out;
+}
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+100%{transform:translateY(0)}
+}
+.btn{
+padding:6px 8px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin:3px;
+}
+.buy{background:#4ea1ff;color:white}
+.sell{background:#facc15;color:black}
+.del{background:red;color:white}
+
+/* MODAL */
 .modal{
 position:fixed;
 top:0;left:0;
 width:100%;height:100%;
-background:rgba(0,0,0,.8);
+background:rgba(0,0,0,0.7);
 display:none;
+align-items:center;
 justify-content:center;
-align-items:center
 }
 .modal-content{
-background:#111c33;
+background:#1f2937;
 padding:20px;
-border-radius:15px;
-width:95%;
-max-width:420px;
-max-height:90vh;
-overflow:auto
+border-radius:12px;
+width:90%;
+max-width:400px;
 }
-.modal-content input,select{
+.modal-content input{
 width:100%;
-padding:8px;
-margin-bottom:8px;
+padding:6px;
+margin:5px 0;
 border-radius:6px;
-border:none
-}
-.modal-content button{
-width:100%;
-padding:8px;
-background:#4ea1ff;
 border:none;
-border-radius:8px;
-color:white;
-cursor:pointer
-}
-.invoice{
-background:#0f1b2e;
-padding:10px;
-border-radius:8px;
-margin-top:10px;
-font-size:13px
-}
-.admin-btn{
-background:#ff9800;
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-margin-left:10px
 }
 </style>
 </head>
@@ -134,150 +112,136 @@ margin-left:10px
 
 <nav>
 <h1>Verif Store</h1>
-<div class="menu">
-<span onclick="openCheck()">Cek Pesanan</span>
-<span class="admin-btn" onclick="openAdmin()">Admin</span>
-<span class="cart" onclick="openCheckout()">🛒 <span id="cartCount">0</span></span>
+<div>
+<button onclick="toggleStore()">Buka/Tutup</button>
+<button onclick="openAdmin()">Admin</button>
 </div>
 </nav>
 
-<div class="status" id="storeStatus">
-⚠ Store Sedang Tutup - Pesanan diproses saat toko dibuka
+<div class="slider">
+<h2>Topup Aman & Cepat</h2>
 </div>
 
-<div class="container">
+<div id="storeStatus" class="status open">STORE OPEN</div>
 
-<div class="category">
-<button class="active" onclick="filter('all',this)">Semua</button>
-<button onclick="filter('growtopia',this)">Growtopia</button>
-<button onclick="filter('creativeps',this)">CreativePS</button>
-</div>
+<div class="container" id="productContainer"></div>
 
-<div class="grid" id="productGrid"></div>
-</div>
-
-<!-- CHECKOUT -->
-<div class="modal" id="checkoutModal">
-<div class="modal-content">
-<h3>Checkout</h3>
-<input type="text" id="nama" placeholder="Nama">
-<input type="text" id="idgame" placeholder="ID Game">
-<select id="payment">
-<option>QRIS</option>
-<option>Dana - 0887437704858</option>
-<option>Gopay - 081315495903</option>
-<option>Paypal - farhanfaza02@gmail.com</option>
-<option>Crypto USDT BEP20</option>
-</select>
-
-<img src="qris.png" style="width:100%;margin:10px 0">
-
-<button onclick="confirmOrder()">Konfirmasi Pesanan</button>
-<div class="invoice" id="invoice"></div>
-</div>
-</div>
-
-<!-- CEK PESANAN -->
-<div class="modal" id="checkModal">
-<div class="modal-content">
-<h3>Cek Pesanan</h3>
-<input type="text" id="searchID" placeholder="Masukkan ID Pesanan">
-<button onclick="checkOrder()">Cari</button>
-<div class="invoice" id="resultOrder"></div>
-</div>
-</div>
-
-<!-- ADMIN -->
+<!-- ADMIN MODAL -->
 <div class="modal" id="adminModal">
 <div class="modal-content">
 <h3>Admin Panel</h3>
-<input type="password" id="adminPass" placeholder="Password Admin">
-<button onclick="loginAdmin()">Login</button>
-<div id="adminArea"></div>
+<input type="text" id="pName" placeholder="Nama Produk">
+<input type="number" id="pBuy" placeholder="Harga Buy">
+<input type="number" id="pSell" placeholder="Harga Sell">
+<input type="file" id="pImage">
+<button class="btn buy" onclick="addProduct()">Tambah / Update</button>
+<button class="btn sell" onclick="closeAdmin()">Tutup</button>
 </div>
 </div>
 
 <script>
-let adminPassword="12345";
 
-let products=[
-{game:"growtopia",name:"Diamond Lock",jual:245,beli:230,img:"https://i.imgur.com/6oKQX0R.png"},
-{game:"growtopia",name:"Blue Gem Lock",jual:24000,beli:23000,img:"https://i.imgur.com/FVZ7x7K.png"},
-{game:"creativeps",name:"Blue Gem Lock",jual:1100,beli:900,img:"https://i.imgur.com/FVZ7x7K.png"},
-{game:"creativeps",name:"Black Gem Lock",jual:105000,beli:95000,img:"https://i.imgur.com/B8aYp7O.png"},
-{game:"creativeps",name:"Mray",jual:120000,beli:100000,img:"https://i.imgur.com/B8aYp7O.png"},
-{game:"creativeps",name:"IGL",jual:20000,beli:12000,img:"https://i.imgur.com/6oKQX0R.png"},
-{game:"creativeps",name:"Creative Coin",jual:18000,beli:15000,img:"https://i.imgur.com/6oKQX0R.png"},
-{game:"creativeps",name:"Lray",jual:2000,beli:0,img:"https://i.imgur.com/6oKQX0R.png"}
-];
+let storeOpen=true;
+let editIndex=null;
 
-let cart=[];
-let orders=JSON.parse(localStorage.getItem("orders"))||[];
+/* LOAD DATA */
+let products=JSON.parse(localStorage.getItem("products"))||[];
 
+/* SAVE */
+function saveData(){
+localStorage.setItem("products",JSON.stringify(products));
+}
+
+/* RENDER */
 function renderProducts(){
-let grid=document.getElementById("productGrid");
-grid.innerHTML="";
+const container=document.getElementById("productContainer");
+container.innerHTML="";
 products.forEach((p,i)=>{
-grid.innerHTML+=`
-<div class="card ${p.game}">
+container.innerHTML+=`
+<div class="card">
 <img src="${p.img}">
 <h4>${p.name}</h4>
-<div class="price">
-<div>Jual<br><span>Rp ${p.jual.toLocaleString()}</span></div>
-<div>Beli<br><span>Rp ${p.beli.toLocaleString()}</span></div>
-</div>
-<button class="btn beli" onclick="addToCart(${i})">BELI</button>
-</div>
-`;
+<p>Buy: ${p.buy||"N/A"}</p>
+<p>Sell: ${p.sell||"N/A"}</p>
+${storeOpen ? `<button class="btn buy">BELI</button>` : `<button class="btn sell">TUTUP</button>`}
+<button class="btn buy" onclick="editProduct(${i})">Edit</button>
+<button class="btn del" onclick="deleteProduct(${i})">Hapus</button>
+</div>`;
 });
 }
+
+/* STORE TOGGLE */
+function toggleStore(){
+storeOpen=!storeOpen;
+document.getElementById("storeStatus").innerText=storeOpen?"STORE OPEN":"STORE CLOSED";
+document.getElementById("storeStatus").className=storeOpen?"status open":"status closed";
+renderProducts();
+}
+
+/* ADMIN */
+function openAdmin(){
+document.getElementById("adminModal").style.display="flex";
+}
+function closeAdmin(){
+document.getElementById("adminModal").style.display="none";
+editIndex=null;
+}
+
+/* ADD / UPDATE */
+function addProduct(){
+let name=document.getElementById("pName").value;
+let buy=document.getElementById("pBuy").value;
+let sell=document.getElementById("pSell").value;
+let file=document.getElementById("pImage").files[0];
+
+if(!name){alert("Isi nama!");return;}
+
+if(file){
+let reader=new FileReader();
+reader.onload=function(e){
+saveProduct(name,buy,sell,e.target.result);
+};
+reader.readAsDataURL(file);
+}else{
+saveProduct(name,buy,sell,products[editIndex]?.img||"");
+}
+}
+
+function saveProduct(name,buy,sell,img){
+let data={name,buy,sell,img};
+
+if(editIndex!=null){
+products[editIndex]=data;
+}else{
+products.push(data);
+}
+
+saveData();
+renderProducts();
+closeAdmin();
+}
+
+/* EDIT */
+function editProduct(i){
+let p=products[i];
+document.getElementById("pName").value=p.name;
+document.getElementById("pBuy").value=p.buy;
+document.getElementById("pSell").value=p.sell;
+editIndex=i;
+openAdmin();
+}
+
+/* DELETE */
+function deleteProduct(i){
+if(confirm("Hapus produk?")){
+products.splice(i,1);
+saveData();
+renderProducts();
+}
+}
+
 renderProducts();
 
-function addToCart(i){
-cart.push(products[i]);
-document.getElementById("cartCount").innerText=cart.length;
-}
-
-function openCheckout(){checkoutModal.style.display="flex"}
-function openCheck(){checkModal.style.display="flex"}
-function openAdmin(){adminModal.style.display="flex"}
-
-function confirmOrder(){
-if(cart.length==0)return alert("Keranjang kosong");
-let id="ORD"+Math.floor(Math.random()*99999);
-let total=cart.reduce((a,b)=>a+b.beli,0);
-let order={id,total,status:"Menunggu Pembayaran"};
-orders.push(order);
-localStorage.setItem("orders",JSON.stringify(orders));
-invoice.innerHTML=`ID: ${id}<br>Total: Rp ${total.toLocaleString()}<br>Status: ${order.status}`;
-cart=[];
-cartCount.innerText=0;
-}
-
-function checkOrder(){
-let id=searchID.value;
-let found=orders.find(o=>o.id==id);
-resultOrder.innerHTML=found?`ID: ${found.id}<br>Total: Rp ${found.total.toLocaleString()}<br>Status: ${found.status}`:"Tidak ditemukan";
-}
-
-function loginAdmin(){
-if(adminPass.value==adminPassword){
-adminArea.innerHTML="<p>Login Berhasil</p><button onclick='toggleStore()'>Toggle Status Toko</button>";
-}
-}
-
-function toggleStore(){
-let s=document.getElementById("storeStatus");
-s.style.display=s.style.display=="block"?"none":"block";
-}
-
-function filter(cat,btn){
-document.querySelectorAll(".category button").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
-document.querySelectorAll(".card").forEach(c=>{
-c.style.display=(cat=="all"||c.classList.contains(cat))?"block":"none";
-});
-}
 </script>
 
 </body>
