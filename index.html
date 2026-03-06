@@ -1,134 +1,127 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verif Store</title>
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
-background:#0b0b0b;
+margin:0;
+background:#0f172a;
 color:white;
 }
 
 header{
-text-align:center;
+background:#020617;
 padding:15px;
-background:black;
-border-bottom:2px solid gold;
-}
-
-header h1{
-color:gold;
-margin:0;
-}
-
-.menu{
-display:flex;
-justify-content:center;
-gap:10px;
-padding:10px;
-}
-
-.menu button{
-background:#111;
-border:1px solid gold;
-color:white;
-padding:8px 15px;
-cursor:pointer;
-}
-
-.menu button.active{
-background:gold;
-color:black;
-}
-
-.tabs{
-display:flex;
-justify-content:center;
-gap:10px;
-padding:10px;
-}
-
-.tab{
-padding:8px 15px;
-background:#111;
-border:1px solid gold;
-cursor:pointer;
-}
-
-.tab.active{
-background:gold;
-color:black;
-}
-
-.container{
-padding:15px;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-gap:15px;
-}
-
-.card{
-background:#151515;
-padding:10px;
-border-radius:8px;
 text-align:center;
-border:1px solid #222;
-}
-
-.card img{
-width:70px;
-height:70px;
-object-fit:contain;
-margin-bottom:10px;
-}
-
-.card button{
-background:gold;
-border:none;
-padding:6px 12px;
-cursor:pointer;
+font-size:22px;
 font-weight:bold;
 }
 
-.checkout{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:black;
-border-top:2px solid gold;
+.storeStatus{
+text-align:center;
+padding:10px;
+background:#16a34a;
+}
+
+.container{
+padding:20px;
+}
+
+.slider{
+display:flex;
+overflow:hidden;
+}
+
+.slide{
+min-width:100%;
+transition:0.4s;
+}
+
+.category{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+.category button{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+}
+
+.product{
+background:#020617;
+border-radius:10px;
 padding:15px;
-display:none;
+margin-bottom:15px;
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.product img{
+width:70px;
+height:70px;
+border-radius:8px;
+object-fit:cover;
+}
+
+.price{
+font-size:14px;
+margin-top:5px;
+}
+
+.buy{color:#22c55e}
+.sell{color:#ef4444}
+
+button.buyBtn{
+background:#2563eb;
+border:none;
+padding:8px 15px;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+.sellForm{
+background:#020617;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
 }
 
 .qris{
 text-align:center;
-margin-top:10px;
-display:none;
+margin-top:20px;
 }
 
 .qris img{
-width:200px;
+width:220px;
+border-radius:10px;
 }
 
-.inputbox{
-margin-top:10px;
-}
-
-input{
-width:100%;
-padding:8px;
-margin-top:5px;
-background:#111;
-border:1px solid gold;
-color:white;
+.adminPanel{
+margin-top:30px;
+background:#020617;
+padding:20px;
+border-radius:10px;
 }
 
 </style>
@@ -136,186 +129,178 @@ color:white;
 
 <body>
 
-<header>
-<h1>VERIF STORE</h1>
-</header>
+<header>VERIF STORE</header>
 
-<!-- MENU BUY SELL -->
-
-<div class="menu">
-<button class="active" onclick="setMode('buy',this)">BUY</button>
-<button onclick="setMode('sell',this)">SELL</button>
-</div>
-
-<!-- GAME TAB -->
-
-<div class="tabs">
-<div class="tab active" onclick="showGame('growtopia',this)">Growtopia</div>
-<div class="tab" onclick="showGame('creativeps',this)">CreativePS</div>
-</div>
+<div id="status" class="storeStatus">STORE BUKA</div>
 
 <div class="container">
 
-<!-- GROWtopia -->
-
-<div id="growtopia" class="products">
-
-<div class="card">
-<img src="images/cps-dl.png">
-<h4>Diamond Lock</h4>
-<p id="dl-price">Rp 245</p>
-<button onclick="buy('Diamond Lock',245,'growtopia')">Proses</button>
+<div class="category">
+<button onclick="slide(0)">BUY</button>
+<button onclick="slide(1)">SELL</button>
 </div>
 
-<div class="card">
-<img src="images/cps-bgl.png">
-<h4>Blue Gem Lock</h4>
-<p id="bgl-price">Rp 24.000</p>
-<button onclick="buy('Blue Gem Lock',24000,'growtopia')">Proses</button>
+<div class="slider" id="slider">
+
+<!-- BUY PAGE -->
+
+<div class="slide">
+
+<h2>Growtopia</h2>
+
+<div class="product">
+<img src="growtopia.png">
+<div>
+<b>Diamond Lock</b>
+<div class="price buy">Buy : Rp 245</div>
+<div class="price sell">Sell : Rp 230</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="growtopia.png">
+<div>
+<b>Blue Gem Lock</b>
+<div class="price buy">Buy : Rp 24000</div>
+<div class="price sell">Sell : Rp 23000</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<h2>CreativePS</h2>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>BGL CPS</b>
+<div class="price buy">Buy : Rp 1000</div>
+<div class="price sell">Sell : Rp 850</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>Black CPS</b>
+<div class="price buy">Buy : Rp 100000</div>
+<div class="price sell">Sell : Rp 85000</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>Creative Coin</b>
+<div class="price buy">Buy : Rp 17500</div>
+<div class="price sell">Sell : Rp 15000</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>IGL</b>
+<div class="price buy">Buy : Rp 30000</div>
+<div class="price sell">Sell : Rp 20000</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>MRAY</b>
+<div class="price buy">Buy : Rp 115000</div>
+<div class="price sell">Sell : Rp 95000</div>
+<button class="buyBtn">Beli</button>
+</div>
+</div>
+
+<div class="product">
+<img src="creativeps.png">
+<div>
+<b>LRAY</b>
+<div class="price buy">Buy : Rp 2000</div>
+<div class="price sell">Sell : -</div>
+<button class="buyBtn">Beli</button>
+</div>
 </div>
 
 </div>
 
-<!-- CREATIVEPS -->
+<!-- SELL PAGE -->
 
-<div id="creativeps" class="products" style="display:none">
+<div class="slide">
 
-<div class="card">
-<img src="images/cps-bgl.png">
-<h4>BGL CPS</h4>
-<p id="cpsbgl-price">Rp 1.000</p>
-<button onclick="buy('BGL CPS',1000,'creativeps')">Proses</button>
+<div class="sellForm">
+
+<h2>Jual Produk</h2>
+
+<label>Game</label>
+<select>
+<option>Growtopia</option>
+<option>CreativePS</option>
+</select>
+
+<label>Nama Produk</label>
+<input placeholder="Masukkan produk">
+
+<label>Jumlah</label>
+<input placeholder="Jumlah">
+
+<label>World</label>
+<input placeholder="World contoh Hanvyr / Pay">
+
+<label>Owner</label>
+<input placeholder="Owner contoh Hanvyr / Verif">
+
+<button class="buyBtn" style="margin-top:15px;">Kirim</button>
+
+<div class="qris">
+
+<h3>Pembayaran QRIS</h3>
+
+<img src="qris.png">
+
 </div>
 
-<div class="card">
-<img src="images/cps-black.png">
-<h4>Black CPS</h4>
-<p id="black-price">Rp 100.000</p>
-<button onclick="buy('Black CPS',100000,'creativeps')">Proses</button>
-</div>
-
-<div class="card">
-<img src="images/creative-coin.png">
-<h4>Creative Coin</h4>
-<p id="coin-price">Rp 17.500</p>
-<button onclick="buy('Creative Coin',17500,'creativeps')">Proses</button>
-</div>
-
-<div class="card">
-<img src="images/igl.png">
-<h4>IGL</h4>
-<p id="igl-price">Rp 30.000</p>
-<button onclick="buy('IGL',30000,'creativeps')">Proses</button>
-</div>
-
-<div class="card">
-<img src="images/mray.png">
-<h4>Mray</h4>
-<p id="mray-price">Rp 115.000</p>
-<button onclick="buy('Mray',115000,'creativeps')">Proses</button>
-</div>
-
-<div class="card">
-<img src="images/lray.png">
-<h4>Lray</h4>
-<p id="lray-price">Rp 2.000</p>
-<button onclick="buy('Lray',2000,'creativeps')">Proses</button>
 </div>
 
 </div>
 
 </div>
 
-<!-- CHECKOUT -->
+<div class="adminPanel">
 
-<div class="checkout" id="checkout">
+<h3>Admin Panel</h3>
 
-<h3 id="productName"></h3>
-Total: Rp <span id="price"></span>
+<button onclick="buka()">Buka Store</button>
+<button onclick="tutup()">Tutup Store</button>
 
-<div id="sellForm" style="display:none">
-
-<div class="inputbox">
-<label>Nama World</label>
-<input id="worldInput">
-</div>
-
-<div class="inputbox">
-<label>Nama Owner</label>
-<input id="ownerInput">
-</div>
-
-<p id="worldInfo"></p>
-
-</div>
-
-<br>
-
-<button onclick="showQRIS()">QRIS</button>
-<button onclick="alert('Dana: 0887437704858')">Dana</button>
-<button onclick="alert('Gopay: 081315495903')">Gopay</button>
-<button onclick="alert('Paypal: farhanfaza02@gmail.com')">Paypal</button>
-<button onclick="alert('USDT BEP20: 0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE')">Crypto</button>
-
-<div class="qris" id="qris">
-<img src="images/qris.png">
 </div>
 
 </div>
 
 <script>
 
-let mode="buy"
+let slider = document.getElementById("slider")
 
-function setMode(m,btn){
-
-mode=m
-
-document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"))
-btn.classList.add("active")
-
+function slide(x){
+slider.style.transform="translateX(-"+(x*100)+"%)"
 }
 
-function showGame(game,el){
-
-document.getElementById("growtopia").style.display="none"
-document.getElementById("creativeps").style.display="none"
-
-document.getElementById(game).style.display="grid"
-
-document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"))
-el.classList.add("active")
-
+function buka(){
+document.getElementById("status").innerHTML="STORE BUKA"
+document.getElementById("status").style.background="#16a34a"
 }
 
-function buy(name,price,game){
-
-document.getElementById("checkout").style.display="block"
-document.getElementById("productName").innerText=name
-document.getElementById("price").innerText=price
-
-if(mode==="sell"){
-
-document.getElementById("sellForm").style.display="block"
-
-if(game==="growtopia"){
-document.getElementById("worldInfo").innerText="Kirim item ke World: HANVYR | Owner: HANVYR"
-}
-
-if(game==="creativeps"){
-document.getElementById("worldInfo").innerText="Kirim item ke World: PAY | Owner: VERIF"
-}
-
-}else{
-
-document.getElementById("sellForm").style.display="none"
-
-}
-
-}
-
-function showQRIS(){
-document.getElementById("qris").style.display="block"
+function tutup(){
+document.getElementById("status").innerHTML="STORE TUTUP"
+document.getElementById("status").style.background="#dc2626"
 }
 
 </script>
