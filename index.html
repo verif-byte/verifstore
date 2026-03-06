@@ -7,75 +7,94 @@
 <style>
 
 body{
+margin:0;
 font-family:Arial;
 background:#0b0b0b;
 color:white;
-margin:0;
 }
 
 header{
-background:black;
-padding:15px;
 text-align:center;
+padding:15px;
+background:black;
 border-bottom:2px solid gold;
 }
 
-h1{
+header h1{
 color:gold;
 margin:0;
 }
 
-.status{
-text-align:center;
+.menu{
+display:flex;
+justify-content:center;
+gap:10px;
 padding:10px;
-font-weight:bold;
 }
 
-.open{
-color:#00ff88;
+.menu button{
+background:#111;
+border:1px solid gold;
+color:white;
+padding:8px 15px;
+cursor:pointer;
 }
 
-.closed{
-color:red;
+.menu button.active{
+background:gold;
+color:black;
+}
+
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+padding:10px;
+}
+
+.tab{
+padding:8px 15px;
+background:#111;
+border:1px solid gold;
+cursor:pointer;
+}
+
+.tab.active{
+background:gold;
+color:black;
 }
 
 .container{
-padding:20px;
-}
-
-.game-title{
-font-size:22px;
-color:gold;
-margin-top:30px;
+padding:15px;
 }
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
 gap:15px;
-margin-top:10px;
 }
 
 .card{
-background:#141414;
-padding:15px;
+background:#151515;
+padding:10px;
 border-radius:8px;
-border:1px solid #222;
 text-align:center;
+border:1px solid #222;
+}
+
+.card img{
+width:70px;
+height:70px;
+object-fit:contain;
+margin-bottom:10px;
 }
 
 .card button{
 background:gold;
 border:none;
-padding:8px 15px;
-border-radius:5px;
-font-weight:bold;
+padding:6px 12px;
 cursor:pointer;
-margin-top:8px;
-}
-
-.card button:hover{
-background:#ffd700;
+font-weight:bold;
 }
 
 .checkout{
@@ -89,49 +108,31 @@ padding:15px;
 display:none;
 }
 
-.checkout h3{
-color:gold;
-margin-top:0;
-}
-
-.payment{
-margin-top:10px;
-}
-
-.payment button{
-margin:5px;
-padding:8px 12px;
-border:none;
-background:gold;
-font-weight:bold;
-cursor:pointer;
-}
-
 .qris{
 text-align:center;
 margin-top:10px;
+display:none;
 }
 
 .qris img{
 width:200px;
 }
 
-.admin{
-position:fixed;
-top:10px;
-right:10px;
+.inputbox{
+margin-top:10px;
 }
 
-.admin button{
-background:gold;
-border:none;
-padding:6px 10px;
-cursor:pointer;
+input{
+width:100%;
+padding:8px;
+margin-top:5px;
+background:#111;
+border:1px solid gold;
+color:white;
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -139,106 +140,116 @@ cursor:pointer;
 <h1>VERIF STORE</h1>
 </header>
 
-<div class="admin">
-<button onclick="toggleStore()">Admin Buka/Tutup</button>
+<!-- MENU BUY SELL -->
+
+<div class="menu">
+<button class="active" onclick="setMode('buy',this)">BUY</button>
+<button onclick="setMode('sell',this)">SELL</button>
 </div>
 
-<div id="status" class="status open">
-STORE BUKA
+<!-- GAME TAB -->
+
+<div class="tabs">
+<div class="tab active" onclick="showGame('growtopia',this)">Growtopia</div>
+<div class="tab" onclick="showGame('creativeps',this)">CreativePS</div>
 </div>
 
 <div class="container">
 
-<div class="game-title">Growtopia</div>
+<!-- GROWtopia -->
 
-<div class="products">
-
-<div class="card">
-Diamond Lock
-<br>
-Rp 245
-<br>
-<button onclick="buy('Diamond Lock','245')">Beli</button>
-</div>
+<div id="growtopia" class="products">
 
 <div class="card">
-Blue Gem Lock
-<br>
-Rp 24.000
-<br>
-<button onclick="buy('Blue Gem Lock','24000')">Beli</button>
-</div>
-
-</div>
-
-
-<div class="game-title">CreativePS</div>
-
-<div class="products">
-
-<div class="card">
-Blue Gem Lock
-<br>
-Rp 1.000
-<br>
-<button onclick="buy('Blue Gem Lock CPS','1100')">Beli</button>
+<img src="images/cps-dl.png">
+<h4>Diamond Lock</h4>
+<p id="dl-price">Rp 245</p>
+<button onclick="buy('Diamond Lock',245,'growtopia')">Proses</button>
 </div>
 
 <div class="card">
-Black Gem Lock
-<br>
-Rp 100.000
-<br>
-<button onclick="buy('Black Gem Lock','100000')">Beli</button>
+<img src="images/cps-bgl.png">
+<h4>Blue Gem Lock</h4>
+<p id="bgl-price">Rp 24.000</p>
+<button onclick="buy('Blue Gem Lock',24000,'growtopia')">Proses</button>
+</div>
+
+</div>
+
+<!-- CREATIVEPS -->
+
+<div id="creativeps" class="products" style="display:none">
+
+<div class="card">
+<img src="images/cps-bgl.png">
+<h4>BGL CPS</h4>
+<p id="cpsbgl-price">Rp 1.000</p>
+<button onclick="buy('BGL CPS',1000,'creativeps')">Proses</button>
 </div>
 
 <div class="card">
-Mray
-<br>
-Rp 115.000
-<br>
-<button onclick="buy('Mray','115000')">Beli</button>
+<img src="images/cps-black.png">
+<h4>Black CPS</h4>
+<p id="black-price">Rp 100.000</p>
+<button onclick="buy('Black CPS',100000,'creativeps')">Proses</button>
 </div>
 
 <div class="card">
-IGL
-<br>
-Rp 20.000
-<br>
-<button onclick="buy('IGL','20000')">Beli</button>
+<img src="images/creative-coin.png">
+<h4>Creative Coin</h4>
+<p id="coin-price">Rp 17.500</p>
+<button onclick="buy('Creative Coin',17500,'creativeps')">Proses</button>
 </div>
 
 <div class="card">
-Creative Coin
-<br>
-Rp 18.000
-<br>
-<button onclick="buy('Creative Coin','18000')">Beli</button>
+<img src="images/igl.png">
+<h4>IGL</h4>
+<p id="igl-price">Rp 30.000</p>
+<button onclick="buy('IGL',30000,'creativeps')">Proses</button>
 </div>
 
 <div class="card">
-Lray
-<br>
-Rp 2.000
-<br>
-<button onclick="buy('Lray','2000')">Beli</button>
+<img src="images/mray.png">
+<h4>Mray</h4>
+<p id="mray-price">Rp 115.000</p>
+<button onclick="buy('Mray',115000,'creativeps')">Proses</button>
+</div>
+
+<div class="card">
+<img src="images/lray.png">
+<h4>Lray</h4>
+<p id="lray-price">Rp 2.000</p>
+<button onclick="buy('Lray',2000,'creativeps')">Proses</button>
 </div>
 
 </div>
 
 </div>
 
+<!-- CHECKOUT -->
 
 <div class="checkout" id="checkout">
 
 <h3 id="productName"></h3>
 Total: Rp <span id="price"></span>
 
-<div class="payment">
+<div id="sellForm" style="display:none">
 
-Metode Pembayaran:
+<div class="inputbox">
+<label>Nama World</label>
+<input id="worldInput">
+</div>
 
-<br><br>
+<div class="inputbox">
+<label>Nama Owner</label>
+<input id="ownerInput">
+</div>
+
+<p id="worldInfo"></p>
+
+</div>
+
+<br>
 
 <button onclick="showQRIS()">QRIS</button>
 <button onclick="alert('Dana: 0887437704858')">Dana</button>
@@ -246,65 +257,68 @@ Metode Pembayaran:
 <button onclick="alert('Paypal: farhanfaza02@gmail.com')">Paypal</button>
 <button onclick="alert('USDT BEP20: 0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE')">Crypto</button>
 
-</div>
-
-<div class="qris" id="qris" style="display:none;">
-<img src="qris.png">
+<div class="qris" id="qris">
+<img src="images/qris.png">
 </div>
 
 </div>
-
 
 <script>
 
-let storeOpen = true
+let mode="buy"
 
-function toggleStore(){
+function setMode(m,btn){
 
-storeOpen = !storeOpen
+mode=m
 
-let status = document.getElementById("status")
-
-if(storeOpen){
-
-status.innerHTML="STORE BUKA"
-status.className="status open"
-
-}else{
-
-status.innerHTML="STORE TUTUP"
-status.className="status closed"
+document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"))
+btn.classList.add("active")
 
 }
 
+function showGame(game,el){
+
+document.getElementById("growtopia").style.display="none"
+document.getElementById("creativeps").style.display="none"
+
+document.getElementById(game).style.display="grid"
+
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"))
+el.classList.add("active")
+
 }
 
-
-function buy(name,price){
-
-if(!storeOpen){
-
-alert("Maaf store sedang tutup")
-return
-
-}
+function buy(name,price,game){
 
 document.getElementById("checkout").style.display="block"
-
 document.getElementById("productName").innerText=name
 document.getElementById("price").innerText=price
 
+if(mode==="sell"){
+
+document.getElementById("sellForm").style.display="block"
+
+if(game==="growtopia"){
+document.getElementById("worldInfo").innerText="Kirim item ke World: HANVYR | Owner: HANVYR"
 }
 
+if(game==="creativeps"){
+document.getElementById("worldInfo").innerText="Kirim item ke World: PAY | Owner: VERIF"
+}
+
+}else{
+
+document.getElementById("sellForm").style.display="none"
+
+}
+
+}
 
 function showQRIS(){
-
 document.getElementById("qris").style.display="block"
-
 }
 
 </script>
-
 
 </body>
 </html>
