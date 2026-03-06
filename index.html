@@ -1,246 +1,302 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verif Store V5</title>
+
+<title>Verif Store</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#0f172a;color:white}
 
-/* NAV */
-nav{
-background:#111827;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-nav h1{color:#4ea1ff}
-nav button{
-background:#4ea1ff;
-border:none;
-padding:8px 12px;
-border-radius:8px;
-cursor:pointer;
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
 color:white;
-margin-left:5px;
 }
 
-/* SLIDER */
-.slider{
-height:180px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(90deg,#0f172a,#1e3a8a);
+header{
+background:#020617;
+padding:15px;
 text-align:center;
+font-size:24px;
+font-weight:bold;
 }
-.slider h2{color:#4ea1ff}
 
-/* STATUS */
-.status{text-align:center;padding:10px;font-weight:bold}
-.open{color:#22c55e}
-.closed{color:red}
+.store-status{
+text-align:center;
+padding:10px;
+background:#16a34a;
+}
 
-/* PRODUK */
-.container{
+.slider{
+position:relative;
+overflow:hidden;
+height:220px;
+}
+
+.slide-track{
+display:flex;
+transition:0.5s;
+}
+
+.slide{
+min-width:100%;
+}
+
+.slide img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.category{
 padding:20px;
+}
+
+.products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
 gap:15px;
 }
-.card{
-background:#1f2937;
-padding:15px;
-border-radius:15px;
-text-align:center;
-transition:0.3s;
-}
-.card:hover{transform:translateY(-5px);box-shadow:0 0 15px #4ea1ff}
-.card img{
-width:100px;
-height:100px;
-object-fit:contain;
-margin-bottom:10px;
-animation:float 4s infinite ease-in-out;
-}
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-8px)}
-100%{transform:translateY(0)}
-}
-.btn{
-padding:6px 8px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-margin:3px;
-}
-.buy{background:#4ea1ff;color:white}
-.sell{background:#facc15;color:black}
-.del{background:red;color:white}
 
-/* MODAL */
-.modal{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.7);
-display:none;
-align-items:center;
-justify-content:center;
+.card{
+background:#1e293b;
+padding:10px;
+border-radius:10px;
+text-align:center;
+transition:0.2s;
 }
-.modal-content{
-background:#1f2937;
-padding:20px;
-border-radius:12px;
-width:90%;
-max-width:400px;
+
+.card:hover{
+transform:scale(1.05);
 }
-.modal-content input{
-width:100%;
-padding:6px;
-margin:5px 0;
-border-radius:6px;
+
+.card img{
+width:80px;
+height:80px;
+}
+
+button{
+background:#3b82f6;
 border:none;
+color:white;
+padding:8px;
+margin-top:5px;
+border-radius:5px;
+cursor:pointer;
 }
+
+.checkout{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#020617;
+padding:15px;
+display:none;
+}
+
+.checkout input{
+width:100%;
+padding:8px;
+margin:5px 0;
+}
+
+.qris{
+text-align:center;
+padding:20px;
+}
+
+.qris img{
+width:200px;
+}
+
+.admin{
+position:fixed;
+top:10px;
+right:10px;
+background:#020617;
+padding:10px;
+border-radius:10px;
+}
+
 </style>
 </head>
+
 <body>
 
-<nav>
-<h1>Verif Store</h1>
-<div>
-<button onclick="toggleStore()">Buka/Tutup</button>
-<button onclick="openAdmin()">Admin</button>
+<header>Verif Store</header>
+
+<div id="status" class="store-status">
+Store Open
 </div>
-</nav>
+
+<!-- SLIDER -->
 
 <div class="slider">
-<h2>Topup Aman & Cepat</h2>
+<div class="slide-track" id="slider">
+
+<div class="slide">
+<img src="images/cps-bgl.png">
 </div>
 
-<div id="storeStatus" class="status open">STORE OPEN</div>
-
-<div class="container" id="productContainer"></div>
-
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal">
-<div class="modal-content">
-<h3>Admin Panel</h3>
-<input type="text" id="pName" placeholder="Nama Produk">
-<input type="number" id="pBuy" placeholder="Harga Buy">
-<input type="number" id="pSell" placeholder="Harga Sell">
-<input type="file" id="pImage">
-<button class="btn buy" onclick="addProduct()">Tambah / Update</button>
-<button class="btn sell" onclick="closeAdmin()">Tutup</button>
+<div class="slide">
+<img src="images/cps-blackgl.png">
 </div>
+
+<div class="slide">
+<img src="images/infinity-gl.png">
+</div>
+
+</div>
+</div>
+
+<!-- GROW TOPIA -->
+
+<div class="category">
+
+<h2>Growtopia</h2>
+
+<div class="products">
+
+<div class="card">
+<img src="images/lray.png">
+<h4>1 LRay</h4>
+<p id="price-lray">Rp 5.000</p>
+<button onclick="buy('1 LRay','price-lray')">Buy</button>
+</div>
+
+<div class="card">
+<img src="images/mray.png">
+<h4>1 MRay</h4>
+<p id="price-mray">Rp 45.000</p>
+<button onclick="buy('1 MRay','price-mray')">Buy</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- CREATIVEPS -->
+
+<div class="category">
+
+<h2>CreativePS</h2>
+
+<div class="products">
+
+<div class="card">
+<img src="images/creative-coin.png">
+<h4>100 Creative Coin</h4>
+<p id="price-coin">Rp 10.000</p>
+<button onclick="buy('100 Creative Coin','price-coin')">Buy</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- CHECKOUT -->
+
+<div class="checkout" id="checkout">
+
+<h3 id="productName"></h3>
+
+<input id="buyer" placeholder="Nama Pembeli">
+
+<input id="growid" placeholder="GrowID / Username">
+
+<button onclick="showQR()">Bayar</button>
+
+</div>
+
+<!-- QRIS -->
+
+<div class="qris" id="qris" style="display:none">
+
+<h2>Scan QRIS</h2>
+
+<img src="images/qris.png">
+
+<p>Setelah bayar kirim bukti ke admin</p>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div class="admin">
+
+<button onclick="admin()">Admin</button>
+
 </div>
 
 <script>
 
-let storeOpen=true;
-let editIndex=null;
+/* SLIDER */
 
-/* LOAD DATA */
-let products=JSON.parse(localStorage.getItem("products"))||[];
+let slide=0
 
-/* SAVE */
-function saveData(){
-localStorage.setItem("products",JSON.stringify(products));
+setInterval(()=>{
+slide++
+if(slide>2) slide=0
+document.getElementById("slider").style.transform=
+"translateX(-"+slide*100+"%)"
+},3000)
+
+/* CHECKOUT */
+
+function buy(name,priceid){
+
+let price=document.getElementById(priceid).innerText
+
+document.getElementById("productName").innerText=
+name+" - "+price
+
+document.getElementById("checkout").style.display="block"
+
 }
 
-/* RENDER */
-function renderProducts(){
-const container=document.getElementById("productContainer");
-container.innerHTML="";
-products.forEach((p,i)=>{
-container.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<h4>${p.name}</h4>
-<p>Buy: ${p.buy||"N/A"}</p>
-<p>Sell: ${p.sell||"N/A"}</p>
-${storeOpen ? `<button class="btn buy">BELI</button>` : `<button class="btn sell">TUTUP</button>`}
-<button class="btn buy" onclick="editProduct(${i})">Edit</button>
-<button class="btn del" onclick="deleteProduct(${i})">Hapus</button>
-</div>`;
-});
+/* QRIS */
+
+function showQR(){
+
+document.getElementById("checkout").style.display="none"
+
+document.getElementById("qris").style.display="block"
+
 }
 
-/* STORE TOGGLE */
+/* ADMIN PANEL */
+
+function admin(){
+
+let pass=prompt("Admin Password")
+
+if(pass!="1234") return
+
+let newPrice=prompt("Ubah harga LRay")
+
+if(newPrice){
+
+document.getElementById("price-lray").innerText=newPrice
+
+}
+
+}
+
+/* STORE CONTROL */
+
+let store=true
+
 function toggleStore(){
-storeOpen=!storeOpen;
-document.getElementById("storeStatus").innerText=storeOpen?"STORE OPEN":"STORE CLOSED";
-document.getElementById("storeStatus").className=storeOpen?"status open":"status closed";
-renderProducts();
-}
 
-/* ADMIN */
-function openAdmin(){
-document.getElementById("adminModal").style.display="flex";
-}
-function closeAdmin(){
-document.getElementById("adminModal").style.display="none";
-editIndex=null;
-}
+store=!store
 
-/* ADD / UPDATE */
-function addProduct(){
-let name=document.getElementById("pName").value;
-let buy=document.getElementById("pBuy").value;
-let sell=document.getElementById("pSell").value;
-let file=document.getElementById("pImage").files[0];
+document.getElementById("status").innerText=
+store?"Store Open":"Store Closed"
 
-if(!name){alert("Isi nama!");return;}
-
-if(file){
-let reader=new FileReader();
-reader.onload=function(e){
-saveProduct(name,buy,sell,e.target.result);
-};
-reader.readAsDataURL(file);
-}else{
-saveProduct(name,buy,sell,products[editIndex]?.img||"");
 }
-}
-
-function saveProduct(name,buy,sell,img){
-let data={name,buy,sell,img};
-
-if(editIndex!=null){
-products[editIndex]=data;
-}else{
-products.push(data);
-}
-
-saveData();
-renderProducts();
-closeAdmin();
-}
-
-/* EDIT */
-function editProduct(i){
-let p=products[i];
-document.getElementById("pName").value=p.name;
-document.getElementById("pBuy").value=p.buy;
-document.getElementById("pSell").value=p.sell;
-editIndex=i;
-openAdmin();
-}
-
-/* DELETE */
-function deleteProduct(i){
-if(confirm("Hapus produk?")){
-products.splice(i,1);
-saveData();
-renderProducts();
-}
-}
-
-renderProducts();
 
 </script>
 
