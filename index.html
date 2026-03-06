@@ -8,264 +8,303 @@
 
 body{
 font-family:Arial;
-background:#0f0f0f;
+background:#0b0b0b;
 color:white;
 margin:0;
 }
 
 header{
-background:#111;
+background:black;
 padding:15px;
 text-align:center;
-font-size:22px;
+border-bottom:2px solid gold;
+}
+
+h1{
+color:gold;
+margin:0;
+}
+
+.status{
+text-align:center;
+padding:10px;
 font-weight:bold;
-color:#ffd700;
+}
+
+.open{
+color:#00ff88;
+}
+
+.closed{
+color:red;
 }
 
 .container{
 padding:20px;
 }
 
-.login{
-max-width:300px;
-margin:auto;
-background:#1b1b1b;
-padding:20px;
-border-radius:10px;
-}
-
-input,select{
-width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:5px;
-}
-
-button{
-padding:10px;
-margin-top:10px;
-width:100%;
-border:none;
-border-radius:5px;
-background:#ffd700;
-cursor:pointer;
-font-weight:bold;
+.game-title{
+font-size:22px;
+color:gold;
+margin-top:30px;
 }
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 gap:15px;
-margin-top:20px;
+margin-top:10px;
 }
 
 .card{
-background:#1b1b1b;
+background:#141414;
 padding:15px;
-border-radius:10px;
+border-radius:8px;
+border:1px solid #222;
 text-align:center;
 }
 
 .card button{
-margin-top:10px;
+background:gold;
+border:none;
+padding:8px 15px;
+border-radius:5px;
+font-weight:bold;
+cursor:pointer;
+margin-top:8px;
+}
+
+.card button:hover{
+background:#ffd700;
 }
 
 .checkout{
-background:#1b1b1b;
-padding:20px;
-border-radius:10px;
-margin-top:20px;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:black;
+border-top:2px solid gold;
+padding:15px;
+display:none;
+}
+
+.checkout h3{
+color:gold;
+margin-top:0;
 }
 
 .payment{
-background:#111;
-padding:15px;
-border-radius:10px;
 margin-top:10px;
 }
 
-.admin{
-background:#1b1b1b;
-padding:20px;
-border-radius:10px;
-margin-top:20px;
+.payment button{
+margin:5px;
+padding:8px 12px;
+border:none;
+background:gold;
+font-weight:bold;
+cursor:pointer;
 }
 
-.hidden{
-display:none;
+.qris{
+text-align:center;
+margin-top:10px;
+}
+
+.qris img{
+width:200px;
+}
+
+.admin{
+position:fixed;
+top:10px;
+right:10px;
+}
+
+.admin button{
+background:gold;
+border:none;
+padding:6px 10px;
+cursor:pointer;
 }
 
 </style>
 </head>
 
+
 <body>
 
-<header>VERIF STORE</header>
+<header>
+<h1>VERIF STORE</h1>
+</header>
+
+<div class="admin">
+<button onclick="toggleStore()">Admin Buka/Tutup</button>
+</div>
+
+<div id="status" class="status open">
+STORE BUKA
+</div>
 
 <div class="container">
 
-<!-- LOGIN -->
+<div class="game-title">Growtopia</div>
 
-<div id="loginPage" class="login">
+<div class="products">
 
-<h3>Login</h3>
+<div class="card">
+Diamond Lock
+<br>
+Rp 245
+<br>
+<button onclick="buy('Diamond Lock','245')">Beli</button>
+</div>
 
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
+<div class="card">
+Blue Gem Lock
+<br>
+Rp 24.000
+<br>
+<button onclick="buy('Blue Gem Lock','24000')">Beli</button>
+</div>
 
 </div>
 
-<!-- STORE -->
 
-<div id="storePage" class="hidden">
+<div class="game-title">CreativePS</div>
 
-<h2>Produk Topup</h2>
+<div class="products">
 
-<div class="products" id="productList"></div>
+<div class="card">
+Blue Gem Lock
+<br>
+Rp 1.000
+<br>
+<button onclick="buy('Blue Gem Lock CPS','1100')">Beli</button>
+</div>
 
-<div class="checkout hidden" id="checkoutBox">
+<div class="card">
+Black Gem Lock
+<br>
+Rp 100.000
+<br>
+<button onclick="buy('Black Gem Lock','100000')">Beli</button>
+</div>
 
-<h3>Checkout</h3>
+<div class="card">
+Mray
+<br>
+Rp 115.000
+<br>
+<button onclick="buy('Mray','115000')">Beli</button>
+</div>
 
-<input id="playerId" placeholder="Nama / ID Player">
+<div class="card">
+IGL
+<br>
+Rp 20.000
+<br>
+<button onclick="buy('IGL','20000')">Beli</button>
+</div>
 
-<select id="paymentMethod">
-<option>DANA</option>
-<option>GOPAY</option>
-<option>QRIS</option>
-</select>
+<div class="card">
+Creative Coin
+<br>
+Rp 18.000
+<br>
+<button onclick="buy('Creative Coin','18000')">Beli</button>
+</div>
+
+<div class="card">
+Lray
+<br>
+Rp 2.000
+<br>
+<button onclick="buy('Lray','2000')">Beli</button>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="checkout" id="checkout">
+
+<h3 id="productName"></h3>
+Total: Rp <span id="price"></span>
 
 <div class="payment">
 
-<b>Metode Pembayaran</b>
+Metode Pembayaran:
 
 <br><br>
 
-DANA : 0887437704858<br>
-GOPAY : 081315495903
-
-<br><br>
-
-<b>QRIS Scan</b><br>
-
-<img src="qris.png" style="width:100%;border-radius:10px">
-
-<br><br>
-
-Harap transfer sesuai harga produk dan upload bukti pembayaran.
+<button onclick="showQRIS()">QRIS</button>
+<button onclick="alert('Dana: 0887437704858')">Dana</button>
+<button onclick="alert('Gopay: 081315495903')">Gopay</button>
+<button onclick="alert('Paypal: farhanfaza02@gmail.com')">Paypal</button>
+<button onclick="alert('USDT BEP20: 0x36DAf416EC3f9dd0B6DE307b7FE807c5940B70eE')">Crypto</button>
 
 </div>
 
-<input type="file">
-
-<button onclick="order()">Kirim Order</button>
-
-</div>
-
-<!-- ADMIN -->
-
-<div class="admin hidden" id="adminPanel">
-
-<h3>Admin Panel</h3>
-
-<input id="productName" placeholder="Nama Produk">
-<input id="productPrice" placeholder="Harga">
-
-<button onclick="addProduct()">Tambah Produk</button>
-
+<div class="qris" id="qris" style="display:none;">
+<img src="qris.png">
 </div>
 
 </div>
 
-</div>
 
 <script>
 
-let products=[
-{name:"Growtopia WL x10",price:"Rp5.000"},
-{name:"Growtopia DL x1",price:"Rp50.000"},
-{name:"Growtopia BGL x1",price:"Rp500.000"}
-]
+let storeOpen = true
 
-function login(){
+function toggleStore(){
 
-let user=document.getElementById("username").value
-let pass=document.getElementById("password").value
+storeOpen = !storeOpen
 
-if(user=="admin" && pass=="admin"){
+let status = document.getElementById("status")
 
-document.getElementById("loginPage").style.display="none"
-document.getElementById("storePage").classList.remove("hidden")
-document.getElementById("adminPanel").classList.remove("hidden")
+if(storeOpen){
 
-loadProducts()
+status.innerHTML="STORE BUKA"
+status.className="status open"
 
-}
+}else{
 
-else{
-
-document.getElementById("loginPage").style.display="none"
-document.getElementById("storePage").classList.remove("hidden")
-
-loadProducts()
+status.innerHTML="STORE TUTUP"
+status.className="status closed"
 
 }
 
 }
 
-function loadProducts(){
 
-let list=document.getElementById("productList")
-list.innerHTML=""
+function buy(name,price){
 
-products.forEach((p,i)=>{
+if(!storeOpen){
 
-list.innerHTML+=`
-
-<div class="card">
-
-<b>${p.name}</b><br>
-${p.price}
-
-<button onclick="buy(${i})">Beli</button>
-
-</div>
-
-`
-
-})
+alert("Maaf store sedang tutup")
+return
 
 }
 
-function buy(i){
+document.getElementById("checkout").style.display="block"
 
-document.getElementById("checkoutBox").classList.remove("hidden")
-
-}
-
-function order(){
-
-alert("Order berhasil dikirim! Admin akan memproses setelah pembayaran dicek.")
+document.getElementById("productName").innerText=name
+document.getElementById("price").innerText=price
 
 }
 
-function addProduct(){
 
-let name=document.getElementById("productName").value
-let price=document.getElementById("productPrice").value
+function showQRIS(){
 
-products.push({name:name,price:price})
-
-loadProducts()
-
-alert("Produk ditambahkan")
+document.getElementById("qris").style.display="block"
 
 }
 
 </script>
+
 
 </body>
 </html>
