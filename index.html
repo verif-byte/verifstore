@@ -1,3 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verif Store</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#0b1d3a;
+color:white;
+}
+
+header{
+background:#08152e;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+padding:20px;
+}
+
+h2{
+margin-top:40px;
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:20px;
+}
+
+.product{
+background:#142850;
+padding:15px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
+transition:0.3s;
+}
+
+.product:hover{
+transform:scale(1.05);
+}
+
+.product img{
+width:80px;
+height:80px;
+object-fit:contain;
+margin-bottom:10px;
+}
+
+.product h3{
+margin:10px 0;
+font-size:18px;
+}
+
+.price{
+color:#7fb3ff;
+margin-bottom:12px;
+font-weight:bold;
+}
+
+button{
+background:#3b82f6;
+border:none;
+padding:10px 16px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+Verif Store
+</header>
+
+<div class="container">
+
 <h2>Growtopia</h2>
 
 <div class="products">
@@ -5,15 +99,15 @@
 <div class="product">
 <img src="images/dl.png">
 <h3>Diamond Lock</h3>
-<p>Rp 240</p>
-<button onclick="buy('Diamond Lock',240)">Buy</button>
+<div class="price">Rp 240</div>
+<button onclick="buy('Diamond Lock')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/bgl.png">
 <h3>Blue Gem Lock</h3>
-<p>Rp 24.000</p>
-<button onclick="buy('Blue Gem Lock',24000)">Buy</button>
+<div class="price">Rp 24.000</div>
+<button onclick="buy('Blue Gem Lock')">Buy</button>
 </div>
 
 </div>
@@ -26,43 +120,56 @@
 <div class="product">
 <img src="images/cps-bgl.png">
 <h3>BGL CPS</h3>
-<p>Rp 1.000</p>
-<button onclick="buy('BGL CPS',1000)">Buy</button>
+<div class="price">Rp 1.000</div>
+<button onclick="buy('BGL CPS')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/cps-blackgl.png">
 <h3>Black CPS</h3>
-<p>Rp 100.000</p>
-<button onclick="buy('Black CPS',100000)">Buy</button>
+<div class="price">Rp 100.000</div>
+<button onclick="buy('Black CPS')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/infinity-gl.png">
-<h3>Infinity Gem Lock</h3>
-<p>Rp 30.000</p>
-<button onclick="buy('Infinity Gem Lock',30000)">Buy</button>
+<h3>Infinity GL</h3>
+<div class="price">Rp 30.000</div>
+<button onclick="buy('Infinity GL')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/lray.png">
 <h3>LRay</h3>
-<p>Rp 2.000</p>
-<button onclick="buy('LRay',2000)">Buy</button>
+<div class="price">Rp 2.000</div>
+<button onclick="buy('LRay')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/mray.png">
 <h3>MRay</h3>
-<p>Rp 120.000</p>
-<button onclick="buy('MRay',120000)">Buy</button>
+<div class="price">Rp 120.000</div>
+<button onclick="buy('MRay')">Buy</button>
 </div>
 
 <div class="product">
 <img src="images/creative-coin.png">
 <h3>Creative Coin</h3>
-<p>Rp 18.000</p>
-<button onclick="buy('Creative Coin',18000)">Buy</button>
+<div class="price">Rp 18.000</div>
+<button onclick="buy('Creative Coin')">Buy</button>
 </div>
 
 </div>
+
+</div>
+
+<script>
+
+function buy(product){
+alert("Produk dipilih: " + product);
+}
+
+</script>
+
+</body>
+</html>
